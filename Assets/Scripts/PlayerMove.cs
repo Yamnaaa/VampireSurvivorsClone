@@ -45,7 +45,18 @@ public class PlayerMove : MonoBehaviour
             _inputY = 0;
         }
 
+        Vector2 dir = new Vector2(_inputX, _inputY).normalized;
+        float angle = Mathf.Atan2(dir.x, dir.y) * Mathf.Rad2Deg;
+
+        if (_inputX != 0 || _inputY != 0)
+        {
+            transform.rotation = Quaternion.Euler(Vector3.forward * angle);
+        }
+
         transform.position = new Vector2(transform.position.x + _inputX * _speed * Time.deltaTime, transform.position.y + _inputY * _speed * Time.deltaTime);
+
+        Camera.main.transform.position = transform.position - Vector3.forward * 10;
+        _walls[0].transform.parent.position = transform.position;
     }
 
     void SetWall()

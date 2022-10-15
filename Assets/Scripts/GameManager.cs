@@ -6,12 +6,14 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    float _curTime;
+    [HideInInspector] public float _curTime;
     float _roundTime1;
     float _roundTime2;
     float _roundTime3;
     float _enemySpawnCool;
-    [HideInInspector] public int _enemySpawned;
+    [SerializeField] List<float> _skillCools;
+    [HideInInspector] public List<float> _skillTimes;
+    [HideInInspector] public List<int> _enemySpawned;
 
     void Awake()
     {
@@ -24,7 +26,16 @@ public class GameManager : MonoBehaviour
         _roundTime2 = 600;
         _roundTime3 = 1200;
         _enemySpawnCool = 0.5f;
-        _enemySpawned = 0;
+        _skillTimes = new List<float>();
+        for (int i = 0; i < _skillCools.Count; i++)
+        {
+            _skillTimes.Add(0);
+        }
+        _enemySpawned = new List<int>();
+        for (int i = 0; i < 3; i++)
+        {
+            _enemySpawned.Add(0);
+        }
     }
 
     void Update()
@@ -35,9 +46,13 @@ public class GameManager : MonoBehaviour
     void TimeCheck()
     {
         _curTime += Time.deltaTime;
+        for (int i = 0; i < _skillTimes.Count; i++)
+        {
+            _skillTimes[i] += Time.deltaTime;
+        }
         if (_curTime > _roundTime1)
         {
-            while (_enemySpawned * _enemySpawnCool < _curTime)
+            while (_enemySpawned[0] * _enemySpawnCool < _curTime)
             {
                 EnemyPoolManager.instance.EnemyActive(0, 1);
             }
@@ -45,7 +60,7 @@ public class GameManager : MonoBehaviour
         
         if (_curTime > _roundTime2)
         {
-            while (_enemySpawned * _enemySpawnCool < _curTime)
+            while (_enemySpawned[1] * _enemySpawnCool < _curTime)
             {
                 EnemyPoolManager.instance.EnemyActive(1, 1);
             }
@@ -53,9 +68,19 @@ public class GameManager : MonoBehaviour
         
         if (_curTime > _roundTime3)
         {
-            while (_enemySpawned * _enemySpawnCool < _curTime)
+            while (_enemySpawned[2] * _enemySpawnCool < _curTime)
             {
                 EnemyPoolManager.instance.EnemyActive(2, 1);
+            }
+        }
+        
+        for (int i = 0; i < _skillCools.Count; i++)
+        {
+            if (_skillTimes[i] >= _skillCools[i])
+            {
+                StartCoroutine(SkillManager.instance.Delay_SkillActive(i, 1));
+
+                _skillTimes[i] = 0;
             }
         }
     }

@@ -29,11 +29,6 @@ public class EnemyPoolManager : MonoBehaviour
         _offset = 100;
     }
 
-    void Update()
-    {
-
-    }
-
     public void EnemyActive(int enemy, int amount)
     {
         int actived = 0;
@@ -68,7 +63,7 @@ public class EnemyPoolManager : MonoBehaviour
 
                 _enemyPools[enemy][i].transform.position = PlayerInfo.instance.transform.position + Camera.main.ScreenToWorldPoint(new Vector3(randomX, randomY, 0));
                 _enemyPools[enemy][i].SetActive(true);
-                GameManager.instance._enemySpawned++;
+                GameManager.instance._enemySpawned[enemy]++;
                 actived++;
                 if (actived >= amount)
                 {
@@ -77,8 +72,11 @@ public class EnemyPoolManager : MonoBehaviour
             }
         }
 
-        EnemyGenerate(enemy, amount - actived);
-        EnemyActive(enemy, amount - actived);
+        if (actived < amount)
+        {
+            EnemyGenerate(enemy, amount - actived);
+            EnemyActive(enemy, amount - actived);
+        }
     }
 
     void EnemyGenerate(int enemy, int amount)
