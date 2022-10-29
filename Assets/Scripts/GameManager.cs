@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
         _roundTime1 = 0;
         _roundTime2 = 600;
         _roundTime3 = 1200;
-        _enemySpawnCool = 0.5f;
+        _enemySpawnCool = 1f;
         _skillTimes = new List<float>();
         for (int i = 0; i < _skillCools.Count; i++)
         {
@@ -78,7 +78,7 @@ public class GameManager : MonoBehaviour
         {
             if (_skillTimes[i] >= _skillCools[i])
             {
-                StartCoroutine(SkillManager.instance.Delay_SkillActive(i, 1));
+                StartCoroutine(SkillManager.instance.Delay_SkillActive(i, 2));
 
                 _skillTimes[i] = 0;
             }

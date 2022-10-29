@@ -61,7 +61,7 @@ public class EnemyPoolManager : MonoBehaviour
                     randomY = -_offset;
                 }
 
-                _enemyPools[enemy][i].transform.position = PlayerInfo.instance.transform.position + Camera.main.ScreenToWorldPoint(new Vector3(randomX, randomY, 0));
+                _enemyPools[enemy][i].transform.position = Camera.main.ScreenToWorldPoint(new Vector3(randomX, randomY, 0));
                 _enemyPools[enemy][i].SetActive(true);
                 GameManager.instance._enemySpawned[enemy]++;
                 actived++;

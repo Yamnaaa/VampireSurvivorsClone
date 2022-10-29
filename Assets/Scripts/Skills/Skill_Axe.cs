@@ -2,19 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Skill_Knife : MonoBehaviour
+public class Skill_Axe : MonoBehaviour
 {
-    [SerializeField] float _speed;
     [SerializeField] float _skillDamage;
+    Rigidbody2D rb;
+
+    void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
 
     void OnEnable()
     {
-        transform.rotation = PlayerInfo.instance.transform.rotation;
+        rb.velocity = Vector2.up * 3;
     }
 
     void Update()
     {
-        transform.position += transform.up * (_speed * Time.deltaTime);
+        
     }
 
     void OnTriggerEnter2D(Collider2D collision)

@@ -46,7 +46,7 @@ public class PlayerMove : MonoBehaviour
         }
 
         Vector2 dir = new Vector2(_inputX, _inputY).normalized;
-        float angle = Mathf.Atan2(dir.x, dir.y) * Mathf.Rad2Deg;
+        float angle = Mathf.Atan2(-dir.x, dir.y) * Mathf.Rad2Deg;
 
         if (_inputX != 0 || _inputY != 0)
         {
@@ -63,7 +63,7 @@ public class PlayerMove : MonoBehaviour
     {
         _resolutionX = Screen.width;
         _resolutionY = Screen.height;
-        _offset = 200;
+        _offset = 500;
 
         _walls[0].transform.position = Camera.main.ScreenToWorldPoint(new Vector3(-_offset, _resolutionY * 0.5f, 0));
         _walls[1].transform.position = Camera.main.ScreenToWorldPoint(new Vector3(_resolutionX * 0.5f, _offset + _resolutionY, 0));

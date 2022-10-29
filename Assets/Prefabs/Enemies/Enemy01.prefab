@@ -12,10 +12,10 @@ GameObject:
   - component: {fileID: 8187710106145324514}
   - component: {fileID: 3999248032366347444}
   - component: {fileID: 2031139239771094957}
-  - component: {fileID: 5549307265313966728}
+  - component: {fileID: 7100422112445960751}
   m_Layer: 0
   m_Name: Enemy01
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -99,7 +99,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 566313fb5953b88408a31fedaeadb4b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 1
+  _speed: 0.5
+  _MaxHP: 10
+  _CurHP: 0
 --- !u!58 &2031139239771094957
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -116,7 +118,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!50 &5549307265313966728
+--- !u!50 &7100422112445960751
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
