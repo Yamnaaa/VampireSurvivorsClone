@@ -45,6 +45,10 @@ public class SkillManager : MonoBehaviour
                     float random = Random.Range(-0.2f, 0.2f);
                     _skillPool[skill][i].transform.position = transform.position + transform.right * random;
                 }
+                else
+                {
+                    _skillPool[skill][i].transform.position = transform.position;
+                }
                 _skillPool[skill][i].SetActive(true);
                 actived++;
                 if (actived >= amount)

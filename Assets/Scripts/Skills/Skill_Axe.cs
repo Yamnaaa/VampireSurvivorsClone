@@ -6,6 +6,7 @@ public class Skill_Axe : MonoBehaviour
 {
     [SerializeField] float _skillDamage;
     Rigidbody2D rb;
+    float _random;
 
     void Awake()
     {
@@ -14,12 +15,13 @@ public class Skill_Axe : MonoBehaviour
 
     void OnEnable()
     {
-        rb.velocity = Vector2.up * 3;
+        _random = Random.Range(-5f, 5f);
+        rb.velocity = Vector2.up * 8 + Vector2.right * _random;
     }
 
     void Update()
     {
-        
+        transform.eulerAngles += Vector3.forward * -_random * 100 * Time.deltaTime;
     }
 
     void OnTriggerEnter2D(Collider2D collision)

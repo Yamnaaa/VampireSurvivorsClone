@@ -9,9 +9,14 @@ public class PlayerInfo : MonoBehaviour
 
     [HideInInspector] public Dictionary<GameObject, float> _AttachedEnemies;
     [SerializeField] Slider _HPBar;
+    [SerializeField] Slider _EXPBar;
+    [SerializeField] Text _LevelText;
     [HideInInspector] public float _damage = 10;
-    float _MaxHP = 100;
+    float _MaxHP;
     float _HP;
+    float _MaxEXP;
+    float _EXP;
+    float _level;
 
     void Awake()
     {
@@ -20,7 +25,12 @@ public class PlayerInfo : MonoBehaviour
             instance = this;
         }
 
+        _MaxHP = 100;
         _HP = _MaxHP;
+        _MaxEXP = 50;
+        _EXP = 0;
+        _level = 1;
+        _LevelText.text = "레벨 " + _level;
 
         _AttachedEnemies = new Dictionary<GameObject, float>();
     }
@@ -57,5 +67,31 @@ public class PlayerInfo : MonoBehaviour
         {
             _AttachedEnemies.Remove(collision.gameObject);
         }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("EXP"))
+        {
+            if (collision.TryGetComponent(out EXP exp) && !exp._isMoved) return;
+
+            _EXP += 10;
+            collision.gameObject.SetActive(false);
+
+            if (_EXP >= _MaxEXP)
+            {
+                _EXP = 0;
+                _MaxEXP += 100;
+                LevelUp();
+            }
+
+            _EXPBar.value = _EXP / _MaxEXP;
+        }
+    }
+
+    void LevelUp()
+    {
+        _level++;
+        _LevelText.text = "레벨 " + _level;
     }
 }

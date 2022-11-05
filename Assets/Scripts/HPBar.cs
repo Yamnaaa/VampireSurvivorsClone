@@ -5,16 +5,11 @@ using UnityEngine;
 public class HPBar : MonoBehaviour
 {
     Transform _player;
-    float _HPOffsetY = -75;
+    float _HPOffsetY = -40;
 
     void Start()
     {
         _player = PlayerInfo.instance.transform;
-    }
-
-    void Update()
-    {
-
     }
 
     void LateUpdate()
