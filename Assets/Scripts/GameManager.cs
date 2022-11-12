@@ -78,7 +78,7 @@ public class GameManager : MonoBehaviour
         {
             if (_skillTimes[i] >= _skillCools[i])
             {
-                StartCoroutine(SkillManager.instance.Delay_SkillActive(i, 2));
+                StartCoroutine(SkillManager.instance.Delay_SkillActive(i, 1));
 
                 _skillTimes[i] = 0;
             }

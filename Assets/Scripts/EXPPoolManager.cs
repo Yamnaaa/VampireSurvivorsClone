@@ -7,6 +7,7 @@ public class EXPPoolManager : MonoBehaviour
     public static EXPPoolManager instance;
 
     [SerializeField] GameObject _EXP;
+    [SerializeField] Transform _EXPParent;
     [HideInInspector] public List<GameObject> _EXPPool;
 
     void Awake()
@@ -51,7 +52,7 @@ public class EXPPoolManager : MonoBehaviour
     {
         for (int i = 0; i < amount; i++)
         {
-            GameObject temp = Instantiate(_EXP);
+            GameObject temp = Instantiate(_EXP, _EXPParent);
             temp.SetActive(false);
             _EXPPool.Add(temp);
         }

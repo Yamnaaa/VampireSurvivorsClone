@@ -45,13 +45,18 @@ public class SkillManager : MonoBehaviour
                     float random = Random.Range(-0.2f, 0.2f);
                     _skillPool[skill][i].transform.position = transform.position + transform.right * random;
                 }
+                else if (skill == 2)
+                {
+                    _skillPool[skill][i].SetActive(true);
+                    goto Point1;
+                }
                 else
                 {
                     _skillPool[skill][i].transform.position = transform.position;
                 }
                 _skillPool[skill][i].SetActive(true);
                 actived++;
-                if (actived >= amount)
+                if (actived >= amount * _skillAmounts[skill])
                 {
                     goto Point1;
                 }
@@ -62,10 +67,10 @@ public class SkillManager : MonoBehaviour
 
         Point1:
 
-        if (actived < amount * _skillAmounts[skill])
+        if (actived < amount * _skillAmounts[skill] && skill != 2)
         {
-            SkillGenerate(skill, amount * _skillAmounts[skill] - actived);
-            StartCoroutine(Delay_SkillActive(skill, amount * _skillAmounts[skill] - actived));
+            SkillGenerate(skill, amount * _skillAmounts[skill]);
+            StartCoroutine(Delay_SkillActive(skill, amount * _skillAmounts[skill]));
         }
     }
 
