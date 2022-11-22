@@ -9,6 +9,7 @@ public class SkillManager : MonoBehaviour
     public List<GameObject> _skills;
     List<List<GameObject>> _skillPool;
     [SerializeField] Transform _skillParent;
+    [SerializeField] GameObject _garlic;
     [HideInInspector] public List<int> _skillAmounts;
     [HideInInspector] public List<bool> _skillActived;
 
@@ -26,7 +27,10 @@ public class SkillManager : MonoBehaviour
 
         for (int i = 0; i < _skills.Count; i++)
         {
-            SkillGenerate(i, 100);
+            if (i != 4)
+            {
+                SkillGenerate(i, 100);
+            }
             _skillAmounts.Add(1);
             _skillActived.Add(false);
         }
@@ -48,7 +52,27 @@ public class SkillManager : MonoBehaviour
                 else if (skill == 2)
                 {
                     _skillPool[skill][i].SetActive(true);
+                    actived++;
                     goto Point1;
+                }
+                else if (skill == 4)
+                {
+                    if (_garlic.activeSelf)
+                    {
+                        actived++;
+                        goto Point1;
+                    }
+                    else
+                    {
+                        _garlic.SetActive(true);
+                        actived++;
+                        goto Point1;
+                    }
+                }
+                else if (skill == 5)
+                {
+                    _skillPool[skill][i].transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Random.Range(0, PlayerMove.instance._resolutionX), Random.Range(0, PlayerMove.instance._resolutionY), 0));
+                    _skillPool[skill][i].transform.position = new Vector3(_skillPool[skill][i].transform.position.x, _skillPool[skill][i].transform.position.y, 0);
                 }
                 else
                 {

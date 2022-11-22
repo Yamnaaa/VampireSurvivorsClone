@@ -4,13 +4,22 @@ using UnityEngine;
 
 public class PlayerMove : MonoBehaviour
 {
+    public static PlayerMove instance;
+
     [SerializeField] List<BoxCollider2D> _walls;
     [SerializeField] float _speed;
     float _inputX, _inputY;
-    int _resolutionX, _resolutionY, _offset;
+    [HideInInspector] public int _resolutionX, _resolutionY, _offset;
 
     void Awake()
     {
+        if (instance == null)
+        {
+            instance = this;
+        }
+
+        _resolutionX = 0;
+        _resolutionY = 0;
         _inputX = 0;
         _inputY = 0;
 
@@ -19,6 +28,11 @@ public class PlayerMove : MonoBehaviour
 
     void Update()
     {
+        if (_resolutionX != Screen.width || _resolutionY != Screen.height)
+        {
+            SetWall();
+        }
+
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
         {
             _inputX = -1;
@@ -70,9 +84,9 @@ public class PlayerMove : MonoBehaviour
         _walls[2].transform.position = Camera.main.ScreenToWorldPoint(new Vector3(_offset + _resolutionX, _resolutionY * 0.5f, 0));
         _walls[3].transform.position = Camera.main.ScreenToWorldPoint(new Vector3(_resolutionX * 0.5f, -_offset, 0));
 
-        _walls[0].size = new Vector2(1, _resolutionY * 0.02f);
-        _walls[1].size = new Vector2(_resolutionX * 0.02f, 1);
-        _walls[2].size = new Vector2(1, _resolutionY * 0.02f);
-        _walls[3].size = new Vector2(_resolutionX * 0.02f, 1);
+        _walls[0].size = new Vector2(1, _resolutionY * 0.5f);
+        _walls[1].size = new Vector2(_resolutionX * 0.5f, 1);
+        _walls[2].size = new Vector2(1, _resolutionY * 0.5f);
+        _walls[3].size = new Vector2(_resolutionX * 0.5f, 1);
     }
 }

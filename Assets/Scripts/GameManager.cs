@@ -76,11 +76,14 @@ public class GameManager : MonoBehaviour
         
         for (int i = 0; i < _skillCools.Count; i++)
         {
-            if (_skillTimes[i] >= _skillCools[i])
+            if (i != 4)
             {
-                StartCoroutine(SkillManager.instance.Delay_SkillActive(i, 1));
+                if (_skillTimes[i] >= _skillCools[i])
+                {
+                    StartCoroutine(SkillManager.instance.Delay_SkillActive(i, 1));
 
-                _skillTimes[i] = 0;
+                    _skillTimes[i] = 0;
+                }
             }
         }
     }
