@@ -1,10 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
+
+    [SerializeField] List<Sprite> _skillImages;
+    [SerializeField] GameObject _boxBtn;
+    [SerializeField] Image _skillImage;
+    [SerializeField] List<Image> _skillSlots;
 
     [HideInInspector] public float _curTime;
     float _roundTime1;
@@ -36,6 +42,9 @@ public class GameManager : MonoBehaviour
         {
             _enemySpawned.Add(0);
         }
+
+        _boxBtn.SetActive(false);
+        _skillImage.gameObject.SetActive(false);
     }
 
     void Update()
@@ -86,5 +95,67 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void LevelUp()
+    {
+        Time.timeScale = 0f;
+
+        _boxBtn.SetActive(true);
+        _skillImage.gameObject.SetActive(true);
+    }
+
+    public void Btn_Box()
+    {
+        int random = Random.Range(0, _skillImages.Count);
+
+        while (SkillManager.instance._skillAmounts[random] >= 8)
+        {
+            random = Random.Range(0, _skillImages.Count);
+        }
+
+        StartCoroutine(Delay_Box(random));
+
+        _boxBtn.SetActive(false);
+    }
+
+    IEnumerator Delay_Box(int index)
+    {
+        float deltaTime = 0;
+        int order = 0;
+
+        while (deltaTime < 1.5f)
+        {
+            _skillImage.sprite = _skillImages[order%_skillImages.Count];
+            order++;
+            deltaTime += Time.unscaledDeltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+
+        if (SkillManager.instance._skillAmounts[index] == 0)
+        {
+            bool IsDone = false;
+            for (int i = 0; i < _skillSlots.Count; i++)
+            {
+                if (_skillSlots[i].sprite == null && !IsDone)
+                {
+                    _skillSlots[i].sprite = _skillImages[index];
+                    IsDone = true;
+                }
+            }
+        }
+        else
+        {
+            //스킬 레벨 변경
+        }
+
+        _skillImage.sprite = _skillImages[index];
+        SkillManager.instance._skillAmounts[index]++;
+
+
+        yield return new WaitForSecondsRealtime(1);
+        _skillImage.gameObject.SetActive(false);
+
+        Time.timeScale = 1f;
     }
 }

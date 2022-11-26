@@ -27,12 +27,17 @@ public class PlayerInfo : MonoBehaviour
 
         _MaxHP = 100;
         _HP = _MaxHP;
-        _MaxEXP = 50;
+        _MaxEXP = 10;
         _EXP = 0;
         _level = 1;
         _LevelText.text = "레벨 " + _level;
 
         _AttachedEnemies = new Dictionary<GameObject, float>();
+    }
+
+    void Update()
+    {
+        _EXPBar.value = Mathf.Lerp(_EXPBar.value, _EXP / _MaxEXP, 0.1f);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -84,8 +89,6 @@ public class PlayerInfo : MonoBehaviour
                 _MaxEXP += 100;
                 LevelUp();
             }
-
-            _EXPBar.value = _EXP / _MaxEXP;
         }
     }
 
@@ -93,5 +96,7 @@ public class PlayerInfo : MonoBehaviour
     {
         _level++;
         _LevelText.text = "레벨 " + _level;
+
+        GameManager.instance.LevelUp();
     }
 }

@@ -11,7 +11,6 @@ public class SkillManager : MonoBehaviour
     [SerializeField] Transform _skillParent;
     [SerializeField] GameObject _garlic;
     [HideInInspector] public List<int> _skillAmounts;
-    [HideInInspector] public List<bool> _skillActived;
 
     void Awake()
     {
@@ -23,7 +22,6 @@ public class SkillManager : MonoBehaviour
         _skillPool = new List<List<GameObject>>();
 
         _skillAmounts = new List<int>();
-        _skillActived = new List<bool>();
 
         for (int i = 0; i < _skills.Count; i++)
         {
@@ -31,15 +29,20 @@ public class SkillManager : MonoBehaviour
             {
                 SkillGenerate(i, 100);
             }
-            _skillAmounts.Add(1);
-            _skillActived.Add(false);
+            _skillAmounts.Add(0);
         }
-        _skillActived[0] = true;
+        _skillAmounts[0] = 1;
     }
 
     public IEnumerator Delay_SkillActive(int skill, int amount)
     {
         int actived = 0;
+
+        if (_skillAmounts[skill] == 0)
+        {
+            goto Point1;
+        }
+
         for (int i = 0; i < _skillPool[skill].Count; i++)
         {
             if (!_skillPool[skill][i].activeSelf)
