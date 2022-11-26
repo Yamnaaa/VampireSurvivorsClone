@@ -152,6 +152,10 @@ public class GameManager : MonoBehaviour
         _skillImage.sprite = _skillImages[index];
         SkillManager.instance._skillAmounts[index]++;
 
+        if (index == 4)
+        {
+            SkillManager.instance._garlic.SetActive(true);
+        }
 
         yield return new WaitForSecondsRealtime(1);
         _skillImage.gameObject.SetActive(false);

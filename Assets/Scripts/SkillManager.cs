@@ -9,7 +9,7 @@ public class SkillManager : MonoBehaviour
     public List<GameObject> _skills;
     List<List<GameObject>> _skillPool;
     [SerializeField] Transform _skillParent;
-    [SerializeField] GameObject _garlic;
+    public GameObject _garlic;
     [HideInInspector] public List<int> _skillAmounts;
 
     void Awake()
