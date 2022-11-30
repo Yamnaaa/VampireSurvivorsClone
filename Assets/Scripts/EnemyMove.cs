@@ -24,7 +24,7 @@ public class EnemyMove : MonoBehaviour
 
     void OnEnable()
     {
-        _CurHP = _MaxHP;
+        _CurHP = _MaxHP * (1 + GameManager.instance._curTime / 300);
     }
 
     void Update()
@@ -37,6 +37,7 @@ public class EnemyMove : MonoBehaviour
         if (_CurHP <= 0)
         {
             gameObject.SetActive(false);
+            GameManager.instance._killText.text = (int.Parse(GameManager.instance._killText.text) + 1).ToString();
             EXPPoolManager.instance.EXPActive(transform, 1);
             if (PlayerInfo.instance._AttachedEnemies.ContainsKey(gameObject))
             {

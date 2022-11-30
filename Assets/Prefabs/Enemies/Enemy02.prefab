@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 0.5
-  _MaxHP: 20
+  _MaxHP: 30
   _CurHP: 0
   _damage: 0
 --- !u!58 &2031139239771094957
