@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] List<Image> _skillSlots;
     [SerializeField] List<Image> _accSlots;
     [SerializeField] GameObject _pause;
+    [SerializeField] GameObject _blockPanel;
     public Text _killText;
 
     [HideInInspector] public float _curTime;
@@ -72,7 +73,10 @@ public class GameManager : MonoBehaviour
         _boxBtn.transform.parent.gameObject.SetActive(false);
         _boxBtn.SetActive(false);
         _skillBtn_1.gameObject.SetActive(false);
+        _skillBtn_2.gameObject.SetActive(false);
+        _skillBtn_3.gameObject.SetActive(false);
         _pause.SetActive(false);
+        _blockPanel.SetActive(false);
 
         _IsLevelUp = false;
         _IsSkip = false;
@@ -173,6 +177,8 @@ public class GameManager : MonoBehaviour
         _boxBtn.transform.parent.gameObject.SetActive(true);
         _boxBtn.SetActive(true);
         _skillBtn_1.gameObject.SetActive(true);
+        _skillBtn_2.gameObject.SetActive(true);
+        _skillBtn_3.gameObject.SetActive(true);
     }
 
     public void Btn_Box()
@@ -186,6 +192,7 @@ public class GameManager : MonoBehaviour
 
         StartCoroutine(Delay_Box());
 
+        _blockPanel.SetActive(true);
         _boxBtn.SetActive(false);
     }
 
@@ -236,6 +243,8 @@ public class GameManager : MonoBehaviour
         _btnOrders[0] = random1;
         _btnOrders[1] = random2;
         _btnOrders[2] = random3;
+
+        _blockPanel.SetActive(false);
     }
 
     public void Btn_SelectSkill(int index)
@@ -267,7 +276,7 @@ public class GameManager : MonoBehaviour
 
                 SM._EXSkillAmounts[realIndex]++;
 
-                if (realIndex == 0)
+                if (realIndex == 0 || realIndex == 3)
                 {
                     _skillCools[realIndex] = 0.05f;
                 }
@@ -280,6 +289,8 @@ public class GameManager : MonoBehaviour
 
                 _boxBtn.transform.parent.gameObject.SetActive(false);
                 _skillBtn_1.gameObject.SetActive(false);
+                _skillBtn_2.gameObject.SetActive(false);
+                _skillBtn_3.gameObject.SetActive(false);
                 _IsLevelUp = false;
 
                 Time.timeScale = 1f;
@@ -300,6 +311,8 @@ public class GameManager : MonoBehaviour
 
                 _boxBtn.transform.parent.gameObject.SetActive(false);
                 _skillBtn_1.gameObject.SetActive(false);
+                _skillBtn_2.gameObject.SetActive(false);
+                _skillBtn_3.gameObject.SetActive(false);
                 _IsLevelUp = false;
 
                 Time.timeScale = 1f;
@@ -328,6 +341,8 @@ public class GameManager : MonoBehaviour
 
             _boxBtn.transform.parent.gameObject.SetActive(false);
             _skillBtn_1.gameObject.SetActive(false);
+            _skillBtn_2.gameObject.SetActive(false);
+            _skillBtn_3.gameObject.SetActive(false);
             _IsLevelUp = false;
 
             Time.timeScale = 1f;

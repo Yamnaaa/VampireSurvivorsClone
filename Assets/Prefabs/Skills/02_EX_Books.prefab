@@ -1039,7 +1039,7 @@ GameObject:
   - component: {fileID: 2448360828716532752}
   - component: {fileID: 2316365685412625103}
   m_Layer: 0
-  m_Name: 002_EX_Books
+  m_Name: 02_EX_Books
   m_TagString: Skill
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

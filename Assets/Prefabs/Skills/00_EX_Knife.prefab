@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5528807808802689515}
   - component: {fileID: 1670961475001740325}
   m_Layer: 0
-  m_Name: 000_EX_Knife
+  m_Name: 00_EX_Knife
   m_TagString: Skill
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -13,6 +13,7 @@ public class SkillManager : MonoBehaviour
     List<List<GameObject>> _skillPool;
     [SerializeField] Transform _skillParent;
     public GameObject _garlic;
+    public GameObject _EXBook;
     public List<int> _skillAmounts;
     [HideInInspector] public List<int> _accAmounts;
     [HideInInspector] public List<int> _EXSkillAmounts;
@@ -154,7 +155,7 @@ public class SkillManager : MonoBehaviour
                 }
                 else if (skill == 2)
                 {
-                    _skillPool[skill + _skills.Count][i].SetActive(true);
+                    _EXBook.SetActive(true);
                     actived++;
                     goto Point1;
                 }
