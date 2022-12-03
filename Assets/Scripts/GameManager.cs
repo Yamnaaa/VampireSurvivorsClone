@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour
     SkillManager SM;
 
     [SerializeField] List<Sprite> _skillImages;
+    [SerializeField] List<Sprite> _accImages;
+    [SerializeField] List<Sprite> _EXSkillImages;
     [SerializeField] GameObject _boxBtn;
     [SerializeField] Button _skillBtn_1;
     [SerializeField] Button _skillBtn_2;
@@ -29,6 +31,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public List<int> _enemySpawned;
     List<int> _skillOrders;
     List<int> _accOrders;
+    List<int> _btnOrders;
 
     [HideInInspector] public bool _IsLevelUp;
     [HideInInspector] public bool _IsPause;
@@ -48,6 +51,11 @@ public class GameManager : MonoBehaviour
         _skillTimes = new List<float>();
         _skillOrders = new List<int>();
         _accOrders = new List<int>();
+        _btnOrders = new List<int>();
+        for (int i = 0; i < 3; i++)
+        {
+            _btnOrders.Add(0);
+        }
         for (int i = 0; i < _skillCools.Count; i++)
         {
             _skillTimes.Add(0);
@@ -140,7 +148,15 @@ public class GameManager : MonoBehaviour
             {
                 if (_skillTimes[i] >= _skillCools[i])
                 {
-                    StartCoroutine(SM.Delay_SkillActive(i, 1));
+                    //if (SM._EXSkillAmounts[i] == 0)
+                    if (i != 0 || SM._EXSkillAmounts[i] == 0)
+                    {
+                        StartCoroutine(SM.Delay_SkillActive(i, 1));
+                    }
+                    else
+                    {
+                        StartCoroutine(SM.Delay_EXSkillActive(i, 1));
+                    }
 
                     _skillTimes[i] = 0;
                 }
@@ -168,55 +184,153 @@ public class GameManager : MonoBehaviour
             random = Random.Range(0, _skillImages.Count);
         }
 
-        StartCoroutine(Delay_Box(random));
+        StartCoroutine(Delay_Box());
 
         _boxBtn.SetActive(false);
     }
 
-    IEnumerator Delay_Box(int index)
+    IEnumerator Delay_Box()
     {
         float deltaTime = 0;
         _IsSkip = false;
 
+        int random1 = 0;
+        int random2 = 0;
+        int random3 = 0;
+
         while (deltaTime < 1.5f && !_IsSkip)
         {
-            _skillBtn_1.image.sprite = _skillImages[Random.Range(0, _skillImages.Count)];
-            _skillBtn_2.image.sprite = _skillImages[Random.Range(0, _skillImages.Count)];
-            _skillBtn_3.image.sprite = _skillImages[Random.Range(0, _skillImages.Count)];
+            random1 = Random.Range(0, _skillImages.Count + _accImages.Count);
+            random2 = Random.Range(0, _skillImages.Count + _accImages.Count);
+            random3 = Random.Range(0, _skillImages.Count + _accImages.Count);
+            while (random1 < 6 ? SM._skillAmounts[random1] >= 8 : SM._accAmounts[random1 % 6] >= 8)
+            {
+                random1 = Random.Range(0, _skillImages.Count + _accImages.Count);
+            }
+            while (random2 == random1 || (random2 < 6 ? SM._skillAmounts[random2] >= 8 : SM._accAmounts[random2 % 6] >= 8))
+            {
+                random2 = Random.Range(0, _skillImages.Count + _accImages.Count);
+            }
+            while (random3 == random1 || random3 == random2 || (random3 < 6 ? SM._skillAmounts[random3] >= 8 : SM._accAmounts[random3 % 6] >= 8))
+            {
+                random3 = Random.Range(0, _skillImages.Count + _accImages.Count);
+            }
+            _skillBtn_1.image.sprite = random1 < 6 ? _skillImages[random1] : _accImages[random1 % 6];
+            _skillBtn_2.image.sprite = random2 < 6 ? _skillImages[random2] : _accImages[random2 % 6];
+            _skillBtn_3.image.sprite = random3 < 6 ? _skillImages[random3] : _accImages[random3 % 6];
             deltaTime += Time.unscaledDeltaTime;
             yield return new WaitForEndOfFrame();
         }
 
-        if (SM._skillAmounts[index] == 0)
+        bool IsEX = false;
+        for (int i = 0; i < SM._skillAmounts.Count; i++)
         {
-            bool IsDone = false;
-            for (int i = 0; i < _skillSlots.Count; i++)
+            if (SM._skillAmounts[i] == 8 && SM._accAmounts[i] > 0 && SM._EXSkillAmounts[i] < 1 && !IsEX)
             {
-                print(_skillSlots[i].sprite);
-                if (_skillSlots[i].sprite == null && !IsDone)
-                {
-                    _skillSlots[i].sprite = _skillImages[index];
-                    _skillOrders[index] = i;
-                    IsDone = true;
-                }
+                random1 = i;
+                _skillBtn_1.image.sprite = _EXSkillImages[i];
+                IsEX = true;
             }
         }
 
-        _skillSlots[_skillOrders[index]].transform.GetChild(SM._skillAmounts[index]).GetComponent<Image>().color = Color.green;
+        _btnOrders[0] = random1;
+        _btnOrders[1] = random2;
+        _btnOrders[2] = random3;
+    }
 
-        _skillBtn_1.image.sprite = _skillImages[index];
-        SM._skillAmounts[index]++;
-
-        if (index == 4)
+    public void Btn_SelectSkill(int index)
+    {
+        int realIndex = _btnOrders[index];
+        if (realIndex < 6)
         {
-            SM._garlic.SetActive(true);
+            if (SM._skillAmounts[realIndex] == 0)
+            {
+                bool IsDone = false;
+                for (int i = 0; i < _skillSlots.Count; i++)
+                {
+                    if (_skillSlots[i].sprite == null && !IsDone)
+                    {
+                        _skillSlots[i].sprite = _skillImages[realIndex];
+                        _skillOrders[realIndex] = i;
+                        IsDone = true;
+                    }
+                }
+            }
+
+            if (SM._skillAmounts[realIndex] == 8 && SM._accAmounts[realIndex] > 0 && SM._EXSkillAmounts[realIndex] < 1)
+            {
+                for (int i = 0; i < _skillSlots[_skillOrders[realIndex]].transform.childCount; i++)
+                {
+                    _skillSlots[_skillOrders[realIndex]].transform.GetChild(i).gameObject.SetActive(false);
+                }
+                _skillSlots[_skillOrders[realIndex]].sprite = _EXSkillImages[realIndex];
+
+                SM._EXSkillAmounts[realIndex]++;
+
+                if (realIndex == 0)
+                {
+                    _skillCools[realIndex] = 0.05f;
+                }
+                else if (realIndex == 4)
+                {
+                    //진화마늘로 변경
+                    SM._garlic.SetActive(true);
+                    SM._garlic.transform.localScale = Vector3.one * (0.9f + SM._skillAmounts[4] * 0.1f) * 3;
+                }
+
+                _boxBtn.transform.parent.gameObject.SetActive(false);
+                _skillBtn_1.gameObject.SetActive(false);
+                _IsLevelUp = false;
+
+                Time.timeScale = 1f;
+            }
+            else
+            {
+                _skillSlots[_skillOrders[realIndex]].transform.GetChild(SM._skillAmounts[realIndex]).GetComponent<Image>().color = Color.green;
+
+                SM._skillAmounts[realIndex]++;
+
+                if (realIndex == 4)
+                {
+                    SM._garlic.SetActive(true);
+                    SM._garlic.transform.localScale = Vector3.one * (0.9f + SM._skillAmounts[4] * 0.1f) * 3;
+                }
+
+                _skillTimes[realIndex] = 10;
+
+                _boxBtn.transform.parent.gameObject.SetActive(false);
+                _skillBtn_1.gameObject.SetActive(false);
+                _IsLevelUp = false;
+
+                Time.timeScale = 1f;
+            }
         }
+        else
+        {
+            realIndex -= 6;
+            if (SM._accAmounts[realIndex] == 0)
+            {
+                bool IsDone = false;
+                for (int i = 0; i < _accSlots.Count; i++)
+                {
+                    if (_accSlots[i].sprite == null && !IsDone)
+                    {
+                        _accSlots[i].sprite = _accImages[realIndex];
+                        _accOrders[realIndex] = i;
+                        IsDone = true;
+                    }
+                }
+            }
 
-        yield return new WaitForSecondsRealtime(1);
-        _boxBtn.transform.parent.gameObject.SetActive(false);
-        _skillBtn_1.gameObject.SetActive(false);
-        _IsLevelUp = false;
+            _accSlots[_accOrders[realIndex]].transform.GetChild(SM._accAmounts[realIndex]).GetComponent<Image>().color = Color.green;
 
-        Time.timeScale = 1f;
+            SM._accAmounts[realIndex]++;
+
+            _boxBtn.transform.parent.gameObject.SetActive(false);
+            _skillBtn_1.gameObject.SetActive(false);
+            _IsLevelUp = false;
+
+            Time.timeScale = 1f;
+        }
     }
 }

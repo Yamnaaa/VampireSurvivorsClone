@@ -9,10 +9,13 @@ public class SkillManager : MonoBehaviour
     PlayerMove PM;
 
     public List<GameObject> _skills;
+    public List<GameObject> _EXSkills;
     List<List<GameObject>> _skillPool;
     [SerializeField] Transform _skillParent;
     public GameObject _garlic;
-    [HideInInspector] public List<int> _skillAmounts;
+    public List<int> _skillAmounts;
+    [HideInInspector] public List<int> _accAmounts;
+    [HideInInspector] public List<int> _EXSkillAmounts;
 
     void Awake()
     {
@@ -26,16 +29,28 @@ public class SkillManager : MonoBehaviour
         _skillPool = new List<List<GameObject>>();
 
         _skillAmounts = new List<int>();
+        _accAmounts = new List<int>();
+        _EXSkillAmounts = new List<int>();
 
         for (int i = 0; i < _skills.Count; i++)
         {
             _skillAmounts.Add(0);
+            _accAmounts.Add(0);
             if (i != 4)
             {
                 SkillGenerate(i, 100);
             }
         }
         _skillAmounts[0] = 1;
+
+        for (int i = 0; i < _EXSkills.Count; i++)
+        {
+            _EXSkillAmounts.Add(0);
+            if (i != 2 || i != 4)
+            {
+                EXSkillGenerate(i, 100);
+            }
+        }
     }
 
     public IEnumerator Delay_SkillActive(int skill, int amount)
@@ -91,7 +106,7 @@ public class SkillManager : MonoBehaviour
                 {
                     goto Point1;
                 }
-                yield return new WaitForSeconds(0.1f);
+                yield return new WaitForSeconds(0.05f);
             }
             yield return new WaitForEndOfFrame();
         }
@@ -116,6 +131,87 @@ public class SkillManager : MonoBehaviour
                 _skillPool.Add(new List<GameObject>());
             }
             _skillPool[skill].Add(temp);
+        }
+    }
+
+    public IEnumerator Delay_EXSkillActive(int skill, int amount)
+    {
+        int actived = 0;
+
+        if (_EXSkillAmounts[skill] == 0)
+        {
+            goto Point1;
+        }
+
+        for (int i = 0; i < _skillPool[skill + _skills.Count].Count; i++)
+        {
+            if (!_skillPool[skill + _skills.Count][i].activeSelf)
+            {
+                if (skill == 0)
+                {
+                    float random = Random.Range(-0.2f, 0.2f);
+                    _skillPool[skill + _skills.Count][i].transform.position = transform.position + transform.right * random;
+                }
+                else if (skill == 2)
+                {
+                    _skillPool[skill + _skills.Count][i].SetActive(true);
+                    actived++;
+                    goto Point1;
+                }
+                else if (skill == 4)
+                {
+                    if (_garlic.activeSelf)
+                    {
+                        actived++;
+                        goto Point1;
+                    }
+                    else
+                    {
+                        _garlic.SetActive(true);
+                        actived++;
+                        goto Point1;
+                    }
+                }
+                else if (skill == 5)
+                {
+                    _skillPool[skill + _skills.Count][i].transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Random.Range(0, PM._resolutionX), Random.Range(0, PM._resolutionY), 0));
+                    _skillPool[skill + _skills.Count][i].transform.position = new Vector3(_skillPool[skill + _skills.Count][i].transform.position.x, _skillPool[skill + _skills.Count][i].transform.position.y, 0);
+                }
+                else
+                {
+                    _skillPool[skill + _skills.Count][i].transform.position = transform.position;
+                }
+                _skillPool[skill + _skills.Count][i].SetActive(true);
+                actived++;
+                if (actived >= amount * _EXSkillAmounts[skill])
+                {
+                    goto Point1;
+                }
+                yield return new WaitForSeconds(0.05f);
+            }
+            yield return new WaitForEndOfFrame();
+        }
+
+    Point1:
+
+        if (actived < amount * _EXSkillAmounts[skill] && skill != 2)
+        {
+            EXSkillGenerate(skill, amount * _EXSkillAmounts[skill]);
+            StartCoroutine(Delay_EXSkillActive(skill, amount * _EXSkillAmounts[skill]));
+        }
+    }
+
+    void EXSkillGenerate(int skill, int amount)
+    {
+        for (int i = 0; i < amount; i++)
+        {
+            GameObject temp = Instantiate(_EXSkills[skill], _skillParent);
+            temp.SetActive(false);
+            while (_skillPool.Count <= skill + _skills.Count)
+            {
+                _skillPool.Add(new List<GameObject>());
+            }
+            _skillPool[skill + _skills.Count].Add(temp);
         }
     }
 }

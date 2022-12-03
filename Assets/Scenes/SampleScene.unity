@@ -212,7 +212,7 @@ GameObject:
   - component: {fileID: 117321614}
   - component: {fileID: 117321613}
   m_Layer: 5
-  m_Name: Skill_0
+  m_Name: Skill_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -281,7 +281,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 117321614}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 196394601}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: Btn_SelectSkill
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &117321614
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1155,10 +1167,19 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 08d34434faec84f44a65cd8ceac46433, type: 3}
   - {fileID: 21300000, guid: a1656e49878e8254daae36457d53e8a1, type: 3}
   - {fileID: 21300000, guid: aefda4423cc2c804cad6c0e08446734d, type: 3}
+  _accImages:
+  - {fileID: 21300000, guid: a4b26f8f3e7fe4247aacab1a8c129433, type: 3}
+  - {fileID: 21300000, guid: d05629a24c18d09458c47ecbcaa9f195, type: 3}
+  - {fileID: 21300000, guid: 2f28d850f50b47947aeffe8f81130b78, type: 3}
+  - {fileID: 21300000, guid: 1356e41e140690549a5e36df71d957e5, type: 3}
+  - {fileID: 21300000, guid: 3377e0c970b52e447b71bba7a21932ea, type: 3}
+  - {fileID: 21300000, guid: 7c47ff9487ee2484b9cf8c744d93a756, type: 3}
+  _EXSkillImages:
+  - {fileID: 21300000, guid: 3c1449d73b5661740a2240503e615aa0, type: 3}
   _boxBtn: {fileID: 549648387}
-  _skillImage_1: {fileID: 0}
-  _skillImage_2: {fileID: 0}
-  _skillImage_3: {fileID: 0}
+  _skillBtn_1: {fileID: 117321613}
+  _skillBtn_2: {fileID: 341737561}
+  _skillBtn_3: {fileID: 793790626}
   _skillSlots:
   - {fileID: 866399606}
   - {fileID: 918568411}
@@ -1970,7 +1991,7 @@ GameObject:
   - component: {fileID: 341737562}
   - component: {fileID: 341737561}
   m_Layer: 5
-  m_Name: Skill_1
+  m_Name: Skill_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2039,7 +2060,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 341737562}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 196394601}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: Btn_SelectSkill
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &341737562
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2187,6 +2220,7 @@ Transform:
   - {fileID: 949646616}
   - {fileID: 892870240}
   - {fileID: 4388550157972025728}
+  - {fileID: 954081703}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4322,7 +4356,7 @@ GameObject:
   - component: {fileID: 670165854}
   - component: {fileID: 670165853}
   m_Layer: 5
-  m_Name: Puase
+  m_Name: Pause
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5044,10 +5078,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4653142722563023708, guid: ac2da9dfb2d098542ab6d432a88de185, type: 3}
-      propertyPath: _skillDamage
-      value: 0.3
-      objectReference: {fileID: 0}
     - target: {fileID: 4708157357038373635, guid: ac2da9dfb2d098542ab6d432a88de185, type: 3}
       propertyPath: m_Name
       value: 04_Garlic
@@ -5181,7 +5211,7 @@ GameObject:
   - component: {fileID: 793790627}
   - component: {fileID: 793790626}
   m_Layer: 5
-  m_Name: Skill_2
+  m_Name: Skill_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5250,7 +5280,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 793790627}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 196394601}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: Btn_SelectSkill
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &793790627
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5987,9 +6029,14 @@ MonoBehaviour:
   - {fileID: 4708157357038373635, guid: 970086ecac05b334ab22b800a9f35658, type: 3}
   - {fileID: 4708157357038373635, guid: ac2da9dfb2d098542ab6d432a88de185, type: 3}
   - {fileID: 4708157357038373635, guid: 1e2994fe403c5f34795c572a2e8cb0b2, type: 3}
+  _EXSkills:
+  - {fileID: 4708157357038373635, guid: 531b9e68df2815d4f820e7ea997d6bd9, type: 3}
+  - {fileID: 878638518669848252, guid: a866e09a1f7873c4e84327650446787b, type: 3}
   _skillParent: {fileID: 1147250173}
   _garlic: {fileID: 4708157357421784541}
   _skillAmounts: 
+  _accAmounts: 
+  _EXSkillAmounts: 
 --- !u!1 &910577280
 GameObject:
   m_ObjectHideFlags: 0
@@ -6506,6 +6553,68 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!1001 &954081702
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 351898066}
+    m_Modifications:
+    - target: {fileID: 2448360828716532752, guid: f4ae9c544a4e0104c9db3b391d9de0c3, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2448360828716532752, guid: f4ae9c544a4e0104c9db3b391d9de0c3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2448360828716532752, guid: f4ae9c544a4e0104c9db3b391d9de0c3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2448360828716532752, guid: f4ae9c544a4e0104c9db3b391d9de0c3, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2448360828716532752, guid: f4ae9c544a4e0104c9db3b391d9de0c3, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2448360828716532752, guid: f4ae9c544a4e0104c9db3b391d9de0c3, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2448360828716532752, guid: f4ae9c544a4e0104c9db3b391d9de0c3, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2448360828716532752, guid: f4ae9c544a4e0104c9db3b391d9de0c3, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2448360828716532752, guid: f4ae9c544a4e0104c9db3b391d9de0c3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2448360828716532752, guid: f4ae9c544a4e0104c9db3b391d9de0c3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2448360828716532752, guid: f4ae9c544a4e0104c9db3b391d9de0c3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2448360828716532758, guid: f4ae9c544a4e0104c9db3b391d9de0c3, type: 3}
+      propertyPath: m_Name
+      value: 002_EX_Books
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f4ae9c544a4e0104c9db3b391d9de0c3, type: 3}
+--- !u!4 &954081703 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2448360828716532752, guid: f4ae9c544a4e0104c9db3b391d9de0c3, type: 3}
+  m_PrefabInstance: {fileID: 954081702}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &974711723
 GameObject:
   m_ObjectHideFlags: 0
