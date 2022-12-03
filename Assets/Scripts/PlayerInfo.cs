@@ -7,6 +7,8 @@ public class PlayerInfo : MonoBehaviour
 {
     public static PlayerInfo instance;
 
+    GameManager GM;
+
     [HideInInspector] public Dictionary<GameObject, float> _AttachedEnemies;
     [SerializeField] Slider _HPBar;
     [SerializeField] Slider _EXPBar;
@@ -24,6 +26,8 @@ public class PlayerInfo : MonoBehaviour
         {
             instance = this;
         }
+
+        GM = GameManager.instance;
 
         _MaxHP = 100;
         _HP = _MaxHP;
@@ -97,6 +101,6 @@ public class PlayerInfo : MonoBehaviour
         _level++;
         _LevelText.text = "·¹º§ " + _level;
 
-        GameManager.instance.LevelUp();
+        GM.LevelUp();
     }
 }

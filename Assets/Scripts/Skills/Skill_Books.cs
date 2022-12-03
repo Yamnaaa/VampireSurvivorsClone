@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Skill_Books : MonoBehaviour
 {
+    SkillManager SM;
+    PlayerInfo PI;
+
     List<Transform> _books;
     int _skillAmount;
     float _speed = 120;
@@ -13,6 +16,8 @@ public class Skill_Books : MonoBehaviour
     void Awake()
     {
         _isFirst = true;
+        SM = SkillManager.instance;
+        PI = PlayerInfo.instance;
     }
 
     void OnEnable()
@@ -22,9 +27,10 @@ public class Skill_Books : MonoBehaviour
             _isFirst = false;
             return;
         }
+
         _books = new List<Transform>();
         GameObject pivot = transform.GetChild(0).gameObject;
-        _skillAmount = SkillManager.instance._skillAmounts[2];
+        _skillAmount = SM._skillAmounts[2];
         for (int i = 0; i < _skillAmount; i++)
         {
             GameObject temp = Instantiate(pivot, transform);
@@ -39,7 +45,7 @@ public class Skill_Books : MonoBehaviour
 
     void Update()
     {
-        transform.position = PlayerInfo.instance.transform.position;
+        transform.position = PI.transform.position;
         transform.eulerAngles += Vector3.back * (Time.deltaTime * _speed);
         for (int i = 0; i < _books.Count; i++)
         {

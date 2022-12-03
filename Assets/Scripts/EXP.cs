@@ -4,10 +4,17 @@ using UnityEngine;
 
 public class EXP : MonoBehaviour
 {
+    PlayerInfo PI;
+
     float _speed;
     [HideInInspector] public bool _isMoved;
 
-    private void OnEnable()
+    void Awake()
+    {
+        PI = PlayerInfo.instance;
+    }
+
+    void OnEnable()
     {
         _isMoved = false;
         _speed = 0;
@@ -22,7 +29,7 @@ public class EXP : MonoBehaviour
 
     IEnumerator Delay_MoveToPlayer()
     {
-        Transform player = PlayerInfo.instance.transform;
+        Transform player = PI.transform;
         Vector3 dir = (player.position - transform.position).normalized;
         while (_speed > -10f)
         {

@@ -4,9 +4,16 @@ using UnityEngine;
 
 public class EXPGainer : MonoBehaviour
 {
-    private void LateUpdate()
+    PlayerInfo PI;
+
+    void Awake()
     {
-        transform.position = PlayerInfo.instance.transform.position;
+        PI = PlayerInfo.instance;
+    }
+
+    void LateUpdate()
+    {
+        transform.position = PI.transform.position;
     }
 
     void OnTriggerEnter2D(Collider2D collision)

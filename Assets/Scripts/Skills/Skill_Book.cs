@@ -4,13 +4,22 @@ using UnityEngine;
 
 public class Skill_Book : MonoBehaviour
 {
+    SkillManager SM;
+    PlayerInfo PI;
+
     [SerializeField] float _skillDamage;
+
+    void Start()
+    {
+        SM = SkillManager.instance;
+        PI = PlayerInfo.instance;
+    }
 
     void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Enemy"))
         {
-            float damage = PlayerInfo.instance._damage * _skillDamage;
+            float damage = PI._damage * _skillDamage * (0.9f + SM._skillAmounts[2] * 0.1f);
             if (collision.TryGetComponent(out EnemyMove enemyMove))
             {
                 enemyMove._CurHP -= damage;

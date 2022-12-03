@@ -7,10 +7,17 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
+    EnemyPoolManager EPM;
+    SkillManager SM;
+
     [SerializeField] List<Sprite> _skillImages;
     [SerializeField] GameObject _boxBtn;
-    [SerializeField] Image _skillImage;
+    [SerializeField] Button _skillBtn_1;
+    [SerializeField] Button _skillBtn_2;
+    [SerializeField] Button _skillBtn_3;
     [SerializeField] List<Image> _skillSlots;
+    [SerializeField] List<Image> _accSlots;
+    [SerializeField] GameObject _pause;
     public Text _killText;
 
     [HideInInspector] public float _curTime;
@@ -20,10 +27,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] List<float> _skillCools;
     [HideInInspector] public List<float> _skillTimes;
     [HideInInspector] public List<int> _enemySpawned;
+    List<int> _skillOrders;
+    List<int> _accOrders;
 
-    bool _IsLevelUp;
+    [HideInInspector] public bool _IsLevelUp;
+    [HideInInspector] public bool _IsPause;
     bool _IsSkip;
-    bool _IsPause;
 
     void Awake()
     {
@@ -37,10 +46,15 @@ public class GameManager : MonoBehaviour
         _roundTime2 = 600;
         _roundTime3 = 1200;
         _skillTimes = new List<float>();
+        _skillOrders = new List<int>();
+        _accOrders = new List<int>();
         for (int i = 0; i < _skillCools.Count; i++)
         {
             _skillTimes.Add(0);
+            _skillOrders.Add(0);
+            _accOrders.Add(0);
         }
+        _skillSlots[0].transform.GetChild(0).GetComponent<Image>().color = Color.green;
         _enemySpawned = new List<int>();
         for (int i = 0; i < 3; i++)
         {
@@ -49,18 +63,25 @@ public class GameManager : MonoBehaviour
 
         _boxBtn.transform.parent.gameObject.SetActive(false);
         _boxBtn.SetActive(false);
-        _skillImage.gameObject.SetActive(false);
+        _skillBtn_1.gameObject.SetActive(false);
+        _pause.SetActive(false);
 
         _IsLevelUp = false;
         _IsSkip = false;
         _IsPause = false;
     }
 
+    void Start()
+    {
+        EPM = EnemyPoolManager.instance;
+        SM = SkillManager.instance;
+    }
+
     void Update()
     {
         TimeCheck();
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) || (Input.GetKeyDown(KeyCode.Escape) && _IsLevelUp))
         {
             _IsSkip = true;
         }
@@ -69,12 +90,13 @@ public class GameManager : MonoBehaviour
         {
             if (_IsPause)
             {
-                // UI 온오프
+                _pause.SetActive(false);
                 Time.timeScale = 1f;
                 _IsPause = false;
             }
             else
             {
+                _pause.SetActive(true);
                 Time.timeScale = 0f;
                 _IsPause = true;
             }
@@ -92,7 +114,7 @@ public class GameManager : MonoBehaviour
         {
             while (_enemySpawned[0] * (0.2f + 0.8f * _roundTime2 / (_roundTime2 + _curTime * 3)) < _curTime)
             {
-                EnemyPoolManager.instance.EnemyActive(0, 1);
+                EPM.EnemyActive(0, 1);
             }
         }
         
@@ -100,7 +122,7 @@ public class GameManager : MonoBehaviour
         {
             while (_enemySpawned[1] * (0.4f + 1.6f * _roundTime3 / (_roundTime3 + (_curTime - _roundTime2) * 3)) < _curTime - _roundTime2)
             {
-                EnemyPoolManager.instance.EnemyActive(1, 1);
+                EPM.EnemyActive(1, 1);
             }
         }
         
@@ -108,7 +130,7 @@ public class GameManager : MonoBehaviour
         {
             while (_enemySpawned[2] * (0.8f + 3.2f * 1800 / (1800 + (_curTime - _roundTime3) * 3)) < _curTime - _roundTime3)
             {
-                EnemyPoolManager.instance.EnemyActive(2, 1);
+                EPM.EnemyActive(2, 1);
             }
         }
         
@@ -118,7 +140,7 @@ public class GameManager : MonoBehaviour
             {
                 if (_skillTimes[i] >= _skillCools[i])
                 {
-                    StartCoroutine(SkillManager.instance.Delay_SkillActive(i, 1));
+                    StartCoroutine(SM.Delay_SkillActive(i, 1));
 
                     _skillTimes[i] = 0;
                 }
@@ -134,14 +156,14 @@ public class GameManager : MonoBehaviour
 
         _boxBtn.transform.parent.gameObject.SetActive(true);
         _boxBtn.SetActive(true);
-        _skillImage.gameObject.SetActive(true);
+        _skillBtn_1.gameObject.SetActive(true);
     }
 
     public void Btn_Box()
     {
         int random = Random.Range(0, _skillImages.Count);
 
-        while (SkillManager.instance._skillAmounts[random] >= 8)
+        while (SM._skillAmounts[random] >= 8)
         {
             random = Random.Range(0, _skillImages.Count);
         }
@@ -154,45 +176,45 @@ public class GameManager : MonoBehaviour
     IEnumerator Delay_Box(int index)
     {
         float deltaTime = 0;
-        int order = 0;
         _IsSkip = false;
 
         while (deltaTime < 1.5f && !_IsSkip)
         {
-            _skillImage.sprite = _skillImages[order%_skillImages.Count];
-            order++;
+            _skillBtn_1.image.sprite = _skillImages[Random.Range(0, _skillImages.Count)];
+            _skillBtn_2.image.sprite = _skillImages[Random.Range(0, _skillImages.Count)];
+            _skillBtn_3.image.sprite = _skillImages[Random.Range(0, _skillImages.Count)];
             deltaTime += Time.unscaledDeltaTime;
             yield return new WaitForEndOfFrame();
         }
 
-        if (SkillManager.instance._skillAmounts[index] == 0)
+        if (SM._skillAmounts[index] == 0)
         {
             bool IsDone = false;
             for (int i = 0; i < _skillSlots.Count; i++)
             {
+                print(_skillSlots[i].sprite);
                 if (_skillSlots[i].sprite == null && !IsDone)
                 {
                     _skillSlots[i].sprite = _skillImages[index];
+                    _skillOrders[index] = i;
                     IsDone = true;
                 }
             }
         }
-        else
-        {
-            //스킬 레벨 변경
-        }
 
-        _skillImage.sprite = _skillImages[index];
-        SkillManager.instance._skillAmounts[index]++;
+        _skillSlots[_skillOrders[index]].transform.GetChild(SM._skillAmounts[index]).GetComponent<Image>().color = Color.green;
+
+        _skillBtn_1.image.sprite = _skillImages[index];
+        SM._skillAmounts[index]++;
 
         if (index == 4)
         {
-            SkillManager.instance._garlic.SetActive(true);
+            SM._garlic.SetActive(true);
         }
 
         yield return new WaitForSecondsRealtime(1);
         _boxBtn.transform.parent.gameObject.SetActive(false);
-        _skillImage.gameObject.SetActive(false);
+        _skillBtn_1.gameObject.SetActive(false);
         _IsLevelUp = false;
 
         Time.timeScale = 1f;

@@ -10,6 +10,7 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] float _speed;
     float _inputX, _inputY;
     [HideInInspector] public int _resolutionX, _resolutionY, _offset;
+    GameManager GM;
 
     void Awake()
     {
@@ -17,6 +18,8 @@ public class PlayerMove : MonoBehaviour
         {
             instance = this;
         }
+
+        GM = GameManager.instance;
 
         _resolutionX = 0;
         _resolutionY = 0;
@@ -32,6 +35,8 @@ public class PlayerMove : MonoBehaviour
         {
             SetWall();
         }
+
+        if (GM._IsLevelUp || GM._IsPause) return;
 
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
         {

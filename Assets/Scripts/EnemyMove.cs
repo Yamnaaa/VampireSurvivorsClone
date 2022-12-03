@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class EnemyMove : MonoBehaviour
 {
+    GameManager GM;
+    PlayerInfo PI;
+    EXPPoolManager EXPPM;
+
     [SerializeField] float _speed;
     Transform _player;
     Vector2 _dir;
@@ -14,17 +18,16 @@ public class EnemyMove : MonoBehaviour
 
     void Awake()
     {
+        GM = GameManager.instance;
+        PI = PlayerInfo.instance;
+        EXPPM = EXPPoolManager.instance;
+        _player = PI.transform;
         _damage = 1;
-    }
-
-    void Start()
-    {
-        _player = PlayerInfo.instance.transform;
     }
 
     void OnEnable()
     {
-        _CurHP = _MaxHP * (1 + GameManager.instance._curTime / 300);
+        _CurHP = _MaxHP * (1 + GM._curTime / 300);
     }
 
     void Update()
@@ -37,11 +40,11 @@ public class EnemyMove : MonoBehaviour
         if (_CurHP <= 0)
         {
             gameObject.SetActive(false);
-            GameManager.instance._killText.text = (int.Parse(GameManager.instance._killText.text) + 1).ToString();
-            EXPPoolManager.instance.EXPActive(transform, 1);
-            if (PlayerInfo.instance._AttachedEnemies.ContainsKey(gameObject))
+            GM._killText.text = (int.Parse(GM._killText.text) + 1).ToString();
+            EXPPM.EXPActive(transform, 1);
+            if (PI._AttachedEnemies.ContainsKey(gameObject))
             {
-                PlayerInfo.instance._AttachedEnemies.Remove(gameObject);
+                PI._AttachedEnemies.Remove(gameObject);
             }
         }
     }
@@ -50,7 +53,7 @@ public class EnemyMove : MonoBehaviour
     {
         if (collision.CompareTag("Wall"))
         {
-            transform.position += (PlayerInfo.instance.transform.position - transform.position) * 2;
+            transform.position += (PI.transform.position - transform.position) * 2;
         }
     }
 }

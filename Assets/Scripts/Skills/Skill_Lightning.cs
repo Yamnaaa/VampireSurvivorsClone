@@ -4,7 +4,16 @@ using UnityEngine;
 
 public class Skill_Lightning : MonoBehaviour
 {
+    SkillManager SM;
+    PlayerInfo PI;
+
     [SerializeField] float _skillDamage;
+
+    void Awake()
+    {
+        SM = SkillManager.instance;
+        PI = PlayerInfo.instance;
+    }
 
     void OnEnable()
     {
@@ -21,7 +30,7 @@ public class Skill_Lightning : MonoBehaviour
     {
         if (collision.CompareTag("Enemy"))
         {
-            float damage = PlayerInfo.instance._damage * _skillDamage;
+            float damage = PI._damage * _skillDamage * (0.9f + SM._skillAmounts[5] * 0.1f);
             if (collision.TryGetComponent(out EnemyMove enemyMove))
             {
                 enemyMove._CurHP -= damage;

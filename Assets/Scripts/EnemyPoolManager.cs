@@ -6,6 +6,8 @@ public class EnemyPoolManager : MonoBehaviour
 {
     public static EnemyPoolManager instance;
 
+    GameManager GM;
+
     [SerializeField] List<GameObject> _enemies;
     [SerializeField] Transform _enemyParent;
     List<List<GameObject>> _enemyPools;
@@ -17,6 +19,8 @@ public class EnemyPoolManager : MonoBehaviour
         {
             instance = this;
         }
+
+        GM = GameManager.instance;
 
         _enemyPools = new List<List<GameObject>>();
         for (int i = 0; i < _enemies.Count; i++)
@@ -63,7 +67,7 @@ public class EnemyPoolManager : MonoBehaviour
 
                 _enemyPools[enemy][i].transform.position = Camera.main.ScreenToWorldPoint(new Vector3(randomX, randomY, 0));
                 _enemyPools[enemy][i].SetActive(true);
-                GameManager.instance._enemySpawned[enemy]++;
+                GM._enemySpawned[enemy]++;
                 actived++;
                 if (actived >= amount)
                 {

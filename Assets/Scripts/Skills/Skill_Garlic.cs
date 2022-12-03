@@ -4,11 +4,16 @@ using UnityEngine;
 
 public class Skill_Garlic : MonoBehaviour
 {
+    SkillManager SM;
+    PlayerInfo PI;
+
     Dictionary<GameObject, float> _AttachedEnemies;
     [SerializeField] float _skillDamage;
 
     void Awake()
     {
+        SM = SkillManager.instance;
+        PI = PlayerInfo.instance;
         _AttachedEnemies = new Dictionary<GameObject, float>();
         gameObject.SetActive(false);
     }
@@ -31,7 +36,7 @@ public class Skill_Garlic : MonoBehaviour
 
                 if (_AttachedEnemies[collision.gameObject] >= 1)
                 {
-                    float damage = PlayerInfo.instance._damage * _skillDamage;
+                    float damage = PI._damage * _skillDamage * (0.9f + SM._skillAmounts[4] * 0.1f);
                     enemyMove._CurHP -= damage;
                     _AttachedEnemies[collision.gameObject] = 0;
                 }

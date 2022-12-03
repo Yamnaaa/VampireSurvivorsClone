@@ -6,6 +6,8 @@ public class SkillManager : MonoBehaviour
 {
     public static SkillManager instance;
 
+    PlayerMove PM;
+
     public List<GameObject> _skills;
     List<List<GameObject>> _skillPool;
     [SerializeField] Transform _skillParent;
@@ -19,17 +21,19 @@ public class SkillManager : MonoBehaviour
             instance = this;
         }
 
+        PM = PlayerMove.instance;
+
         _skillPool = new List<List<GameObject>>();
 
         _skillAmounts = new List<int>();
 
         for (int i = 0; i < _skills.Count; i++)
         {
+            _skillAmounts.Add(0);
             if (i != 4)
             {
                 SkillGenerate(i, 100);
             }
-            _skillAmounts.Add(0);
         }
         _skillAmounts[0] = 1;
     }
@@ -74,7 +78,7 @@ public class SkillManager : MonoBehaviour
                 }
                 else if (skill == 5)
                 {
-                    _skillPool[skill][i].transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Random.Range(0, PlayerMove.instance._resolutionX), Random.Range(0, PlayerMove.instance._resolutionY), 0));
+                    _skillPool[skill][i].transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Random.Range(0, PM._resolutionX), Random.Range(0, PM._resolutionY), 0));
                     _skillPool[skill][i].transform.position = new Vector3(_skillPool[skill][i].transform.position.x, _skillPool[skill][i].transform.position.y, 0);
                 }
                 else
