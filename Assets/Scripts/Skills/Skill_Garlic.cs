@@ -7,6 +7,7 @@ public class Skill_Garlic : MonoBehaviour
     SkillManager SM;
     PlayerInfo PI;
 
+    Vector3 _originScale;
     Dictionary<GameObject, float> _AttachedEnemies;
     [SerializeField] float _skillDamage;
 
@@ -14,8 +15,16 @@ public class Skill_Garlic : MonoBehaviour
     {
         SM = SkillManager.instance;
         PI = PlayerInfo.instance;
+        _originScale = transform.localScale;
         _AttachedEnemies = new Dictionary<GameObject, float>();
         gameObject.SetActive(false);
+    }
+
+    public void SetScale()
+    {
+        // 촛대 추가될때마다 or 스킬 고를때마다 호출
+        // 촛대 계수 추가
+        transform.localScale = _originScale * (0.95f + SM._skillAmounts[4] * 0.05f);
     }
 
     void OnTriggerEnter2D(Collider2D collision)
@@ -23,6 +32,13 @@ public class Skill_Garlic : MonoBehaviour
         if (collision.CompareTag("Enemy") && !_AttachedEnemies.ContainsKey(collision.gameObject))
         {
             _AttachedEnemies.Add(collision.gameObject, 1);
+        }
+        else if (collision.CompareTag("Box"))
+        {
+            if (collision.TryGetComponent(out RandomBox randomBox))
+            {
+                randomBox.RandomItem();
+            }
         }
     }
 

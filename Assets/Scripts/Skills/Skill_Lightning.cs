@@ -36,5 +36,12 @@ public class Skill_Lightning : MonoBehaviour
                 enemyMove._CurHP -= damage;
             }
         }
+        else if (collision.CompareTag("Box"))
+        {
+            if (collision.TryGetComponent(out RandomBox randomBox))
+            {
+                randomBox.RandomItem();
+            }
+        }
     }
 }

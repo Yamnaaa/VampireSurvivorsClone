@@ -49,5 +49,13 @@ public class Skill_MagicBall : MonoBehaviour
                 }
             }
         }
+        else if (collision.CompareTag("Box"))
+        {
+            if (collision.TryGetComponent(out RandomBox randomBox))
+            {
+                _through--;
+                randomBox.RandomItem();
+            }
+        }
     }
 }

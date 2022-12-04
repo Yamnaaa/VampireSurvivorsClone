@@ -13,6 +13,7 @@ public class SkillManager : MonoBehaviour
     List<List<GameObject>> _skillPool;
     [SerializeField] Transform _skillParent;
     public GameObject _garlic;
+    public GameObject _EXGarlic;
     public GameObject _EXBook;
     public List<int> _skillAmounts;
     [HideInInspector] public List<int> _accAmounts;
@@ -50,6 +51,11 @@ public class SkillManager : MonoBehaviour
             if (i != 2 || i != 4)
             {
                 EXSkillGenerate(i, 100);
+            }
+            else
+            {
+                _skillPool.Add(new List<GameObject>());
+                _skillPool[_skills.Count + i].Add(Instantiate(new GameObject("temp")));
             }
         }
     }
@@ -96,6 +102,10 @@ public class SkillManager : MonoBehaviour
                 {
                     _skillPool[skill][i].transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Random.Range(0, PM._resolutionX), Random.Range(0, PM._resolutionY), 0));
                     _skillPool[skill][i].transform.position = new Vector3(_skillPool[skill][i].transform.position.x, _skillPool[skill][i].transform.position.y, 0);
+                    if (_EXSkillAmounts[skill] > 0)
+                    {
+                        StartCoroutine(Delay_EXLightning(_skillPool[skill][i].transform));
+                    }
                 }
                 else
                 {
@@ -112,7 +122,7 @@ public class SkillManager : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
 
-        Point1:
+    Point1:
 
         if (actived < amount * _skillAmounts[skill] && skill != 2)
         {
@@ -175,8 +185,9 @@ public class SkillManager : MonoBehaviour
                 }
                 else if (skill == 5)
                 {
-                    _skillPool[skill + _skills.Count][i].transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Random.Range(0, PM._resolutionX), Random.Range(0, PM._resolutionY), 0));
-                    _skillPool[skill + _skills.Count][i].transform.position = new Vector3(_skillPool[skill + _skills.Count][i].transform.position.x, _skillPool[skill + _skills.Count][i].transform.position.y, 0);
+                    _skillPool[skill + _skills.Count][i].SetActive(true);
+                    actived++;
+                    goto Point1;
                 }
                 else
                 {
@@ -213,6 +224,21 @@ public class SkillManager : MonoBehaviour
                 _skillPool.Add(new List<GameObject>());
             }
             _skillPool[skill + _skills.Count].Add(temp);
+        }
+    }
+
+    IEnumerator Delay_EXLightning(Transform transform)
+    {
+        yield return new WaitForSeconds(0.5f);
+        bool IsDone = false;
+        for (int i = 0; i < _skillPool[5 + _skills.Count].Count; i++)
+        {
+            if (!IsDone && !_skillPool[5 + _skills.Count][i].activeSelf)
+            {
+                _skillPool[5 + _skills.Count][i].transform.position = transform.position;
+                _skillPool[5 + _skills.Count][i].SetActive(true);
+                IsDone = true;
+            }
         }
     }
 }

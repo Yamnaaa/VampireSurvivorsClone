@@ -30,5 +30,12 @@ public class Skill_Book : MonoBehaviour
                 enemyMove._CurHP -= damage;
             }
         }
+        else if (collision.CompareTag("Box"))
+        {
+            if (collision.TryGetComponent(out RandomBox randomBox))
+            {
+                randomBox.RandomItem();
+            }
+        }
     }
 }

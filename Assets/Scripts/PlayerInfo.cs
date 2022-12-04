@@ -14,8 +14,8 @@ public class PlayerInfo : MonoBehaviour
     [SerializeField] Slider _EXPBar;
     [SerializeField] Text _LevelText;
     [HideInInspector] public float _damage = 10;
-    float _MaxHP;
-    float _HP;
+    [HideInInspector] public float _MaxHP;
+    [HideInInspector] public float _HP;
     float _MaxEXP;
     float _EXP;
     float _level;
@@ -102,5 +102,10 @@ public class PlayerInfo : MonoBehaviour
         _LevelText.text = "·¹º§ " + _level;
 
         GM.LevelUp();
+    }
+
+    public void UpdateHP()
+    {
+        _HPBar.value = _HP / _MaxHP;
     }
 }

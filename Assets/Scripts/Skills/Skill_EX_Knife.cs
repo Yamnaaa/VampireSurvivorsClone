@@ -48,5 +48,13 @@ public class Skill_EX_Knife : MonoBehaviour
                 }
             }
         }
+        else if (collision.CompareTag("Box"))
+        {
+            if (collision.TryGetComponent(out RandomBox randomBox))
+            {
+                _through--;
+                randomBox.RandomItem();
+            }
+        }
     }
 }

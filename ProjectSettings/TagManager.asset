@@ -8,6 +8,7 @@ TagManager:
   - Wall
   - Skill
   - EXP
+  - Box
   layers:
   - Default
   - TransparentFX

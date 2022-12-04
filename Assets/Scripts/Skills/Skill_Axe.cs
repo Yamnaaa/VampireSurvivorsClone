@@ -51,5 +51,13 @@ public class Skill_Axe : MonoBehaviour
                 }
             }
         }
+        else if (collision.CompareTag("Box"))
+        {
+            if (collision.TryGetComponent(out RandomBox randomBox))
+            {
+                _through--;
+                randomBox.RandomItem();
+            }
+        }
     }
 }

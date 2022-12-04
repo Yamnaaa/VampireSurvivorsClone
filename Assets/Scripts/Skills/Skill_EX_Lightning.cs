@@ -2,29 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Skill_EX_Axe : MonoBehaviour
+public class Skill_EX_Lightning : MonoBehaviour
 {
-    SkillManager SM;
     PlayerInfo PI;
 
     [SerializeField] float _skillDamage;
-    int _through;
 
     void Awake()
     {
-        SM = SkillManager.instance;
         PI = PlayerInfo.instance;
     }
 
-    void Start()
+    void OnEnable()
     {
-        _through = 3;
+        StartCoroutine(Delay_Deactivate());
     }
 
-    void Update()
+    IEnumerator Delay_Deactivate()
     {
-        transform.parent.position += transform.parent.up * 5 * Time.deltaTime;
-        transform.eulerAngles += Vector3.forward * 500 * Time.deltaTime;
+        print("actived");
+        yield return new WaitForSeconds(0.2f);
+        gameObject.SetActive(false);
     }
 
     void OnTriggerEnter2D(Collider2D collision)
@@ -35,18 +33,12 @@ public class Skill_EX_Axe : MonoBehaviour
             if (collision.TryGetComponent(out EnemyMove enemyMove))
             {
                 enemyMove._CurHP -= damage;
-                _through--;
-                if (_through <= 0)
-                {
-                    gameObject.SetActive(false);
-                }
             }
         }
         else if (collision.CompareTag("Box"))
         {
             if (collision.TryGetComponent(out RandomBox randomBox))
             {
-                _through--;
                 randomBox.RandomItem();
             }
         }

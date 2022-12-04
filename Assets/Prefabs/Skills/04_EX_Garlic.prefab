@@ -264,6 +264,7 @@ GameObject:
   - component: {fileID: 2811687529164286745}
   - component: {fileID: 2311975879679068765}
   - component: {fileID: 5528807808802689515}
+  - component: {fileID: 7242912283216583930}
   m_Layer: 0
   m_Name: 04_EX_Garlic
   m_TagString: Skill
@@ -381,6 +382,19 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 7
+--- !u!114 &7242912283216583930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4708157357038373635}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c46687953c37c1d4d937dc85ba050e98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _skillDamage: 0.3
 --- !u!1 &5688907026996701148
 GameObject:
   m_ObjectHideFlags: 0

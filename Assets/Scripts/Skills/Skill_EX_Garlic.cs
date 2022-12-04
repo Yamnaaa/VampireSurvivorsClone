@@ -31,6 +31,13 @@ public class Skill_EX_Garlic : MonoBehaviour
         {
             _AttachedEnemies.Add(collision.gameObject, 1);
         }
+        else if (collision.CompareTag("Box"))
+        {
+            if (collision.TryGetComponent(out RandomBox randomBox))
+            {
+                randomBox.RandomItem();
+            }
+        }
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -43,10 +50,22 @@ public class Skill_EX_Garlic : MonoBehaviour
 
                 if (_AttachedEnemies[collision.gameObject] >= 1)
                 {
+                    if (PI._HP + 0.5f <= PI._MaxHP)
+                    {
+                        PI._HP += 0.5f;
+                        PI.UpdateHP();
+                    }
                     float damage = PI._damage * _skillDamage * 1.7f;
                     enemyMove._CurHP -= damage;
                     _AttachedEnemies[collision.gameObject] = 0;
                 }
+            }
+        }
+        else if (collision.CompareTag("Box"))
+        {
+            if (collision.TryGetComponent(out RandomBox randomBox))
+            {
+                randomBox.RandomItem();
             }
         }
     }

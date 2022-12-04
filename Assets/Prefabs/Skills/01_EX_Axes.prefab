@@ -3708,7 +3708,7 @@ GameObject:
   - component: {fileID: 1376730688941803659}
   m_Layer: 0
   m_Name: 01_EX_Axes
-  m_TagString: Untagged
+  m_TagString: Skill
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
