@@ -8,6 +8,7 @@ public class PlayerInfo : MonoBehaviour
     public static PlayerInfo instance;
 
     GameManager GM;
+    EXPPoolManager EXPPM;
 
     [HideInInspector] public Dictionary<GameObject, float> _AttachedEnemies;
     [SerializeField] Slider _HPBar;
@@ -37,6 +38,11 @@ public class PlayerInfo : MonoBehaviour
         _LevelText.text = "·¹º§ " + _level;
 
         _AttachedEnemies = new Dictionary<GameObject, float>();
+    }
+
+    void Start()
+    {
+        EXPPM = EXPPoolManager.instance;
     }
 
     void Update()
@@ -93,6 +99,28 @@ public class PlayerInfo : MonoBehaviour
                 //_MaxEXP += 50;
                 LevelUp();
             }
+        }
+        else if (collision.gameObject.CompareTag("Chicken"))
+        {
+            _HP = Mathf.Clamp(_HP + 30, 0, _MaxHP);
+            _HPBar.value = _HP / _MaxHP;
+            Destroy(collision.gameObject);
+            GM._itemExist--;
+        }
+        else if (collision.gameObject.CompareTag("Magnet"))
+        {
+            for (int i = 0; i < EXPPM._EXPParent.childCount; i++)
+            {
+                GameObject temp = EXPPM._EXPParent.GetChild(i).gameObject;
+                if (temp.activeSelf)
+                {
+                    if (temp.TryGetComponent(out EXP exp))
+                    {
+                        exp.MoveToPlayer();
+                    }
+                }
+            }
+            Destroy(collision.gameObject);
         }
     }
 

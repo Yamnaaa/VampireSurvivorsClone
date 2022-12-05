@@ -9,6 +9,8 @@ TagManager:
   - Skill
   - EXP
   - Box
+  - Chicken
+  - Magnet
   layers:
   - Default
   - TransparentFX

@@ -7,7 +7,7 @@ public class EXPPoolManager : MonoBehaviour
     public static EXPPoolManager instance;
 
     [SerializeField] GameObject _EXP;
-    [SerializeField] Transform _EXPParent;
+    public Transform _EXPParent;
     [HideInInspector] public List<GameObject> _EXPPool;
 
     void Awake()
