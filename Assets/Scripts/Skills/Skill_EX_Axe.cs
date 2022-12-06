@@ -18,7 +18,7 @@ public class Skill_EX_Axe : MonoBehaviour
 
     void Start()
     {
-        _through = 3;
+        _through = 1000;
     }
 
     void Update()

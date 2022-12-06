@@ -1105,6 +1105,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 66ffbe2d0de106744824d56c22ce9738, type: 3}
   - {fileID: 21300000, guid: b396a00553a0ad348bd0fc348844ff41, type: 3}
   - {fileID: 21300000, guid: 5f01b258a96aa44489a9f2dd168dac6f, type: 3}
+  _chickenImage: {fileID: 21300000, guid: 326e65e80831d8e4bac77fd67135522f, type: 3}
   _boxBtn: {fileID: 549648387}
   _skillBtn_1: {fileID: 117321613}
   _skillBtn_2: {fileID: 341737561}

@@ -96,7 +96,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -126,4 +126,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _chicken: {fileID: 5486039969524155471, guid: f4e35f9b4dc7c3f44a9d6a638655e2de, type: 3}
   _magnet: {fileID: 1832540187648595328, guid: db4145238dda47745a7a089bbb23f677, type: 3}
-  _itemParent: {fileID: 0}

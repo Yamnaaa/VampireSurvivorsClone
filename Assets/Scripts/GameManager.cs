@@ -10,10 +10,12 @@ public class GameManager : MonoBehaviour
     EnemyPoolManager EPM;
     SkillManager SM;
     PlayerMove PM;
+    PlayerInfo PI;
 
     [SerializeField] List<Sprite> _skillImages;
     [SerializeField] List<Sprite> _accImages;
     [SerializeField] List<Sprite> _EXSkillImages;
+    [SerializeField] Sprite _chickenImage;
     [SerializeField] GameObject _boxBtn;
     [SerializeField] Button _skillBtn_1;
     [SerializeField] Button _skillBtn_2;
@@ -38,6 +40,7 @@ public class GameManager : MonoBehaviour
     List<int> _btnOrders;
     [HideInInspector] public int _itemExist;
     int _itemCnt;
+    int _EXCnt;
 
     [HideInInspector] public bool _IsLevelUp;
     [HideInInspector] public bool _IsPause;
@@ -58,8 +61,9 @@ public class GameManager : MonoBehaviour
         _skillOrders = new List<int>();
         _accOrders = new List<int>();
         _btnOrders = new List<int>();
-        _itemCnt = 0;
         _itemExist = 0;
+        _itemCnt = 0;
+        _EXCnt = 0;
         for (int i = 0; i < 3; i++)
         {
             _btnOrders.Add(0);
@@ -95,6 +99,7 @@ public class GameManager : MonoBehaviour
         EPM = EnemyPoolManager.instance;
         SM = SkillManager.instance;
         PM = PlayerMove.instance;
+        PI = PlayerInfo.instance;
     }
 
     void Update()
@@ -222,20 +227,17 @@ public class GameManager : MonoBehaviour
             random1 = Random.Range(0, _skillImages.Count + _accImages.Count);
             random2 = Random.Range(0, _skillImages.Count + _accImages.Count);
             random3 = Random.Range(0, _skillImages.Count + _accImages.Count);
-            while (random1 < 6 ? SM._skillAmounts[random1] >= 8 : SM._accAmounts[random1 % 6] >= 5)
+            while (_EXCnt < 12 && (random1 < 6 ? SM._skillAmounts[random1] >= 8 : SM._accAmounts[random1 % 6] >= 5))
             {
                 random1 = Random.Range(0, _skillImages.Count + _accImages.Count);
-            yield return new WaitForEndOfFrame();
             }
-            while (random2 == random1 || (random2 < 6 ? SM._skillAmounts[random2] >= 8 : SM._accAmounts[random2 % 6] >= 5))
+            while (_EXCnt < 11 && (random2 == random1 || (random2 < 6 ? SM._skillAmounts[random2] >= 8 : SM._accAmounts[random2 % 6] >= 5)))
             {
                 random2 = Random.Range(0, _skillImages.Count + _accImages.Count);
-            yield return new WaitForEndOfFrame();
             }
-            while (random3 == random1 || random3 == random2 || (random3 < 6 ? SM._skillAmounts[random3] >= 8 : SM._accAmounts[random3 % 6] >= 5))
+            while (_EXCnt < 10 && (random3 == random1 || random3 == random2 || (random3 < 6 ? SM._skillAmounts[random3] >= 8 : SM._accAmounts[random3 % 6] >= 5)))
             {
                 random3 = Random.Range(0, _skillImages.Count + _accImages.Count);
-            yield return new WaitForEndOfFrame();
             }
             _skillBtn_1.image.sprite = random1 < 6 ? _skillImages[random1] : _accImages[random1 % 6];
             _skillBtn_2.image.sprite = random2 < 6 ? _skillImages[random2] : _accImages[random2 % 6];
@@ -259,13 +261,40 @@ public class GameManager : MonoBehaviour
         _btnOrders[1] = random2;
         _btnOrders[2] = random3;
 
+        if (_EXCnt == 12)
+        {
+            _skillBtn_3.image.sprite = _chickenImage;
+            _skillBtn_2.image.sprite = _chickenImage;
+            _skillBtn_1.image.sprite = _chickenImage;
+            _btnOrders[2] = -1;
+            _btnOrders[1] = -1;
+            _btnOrders[0] = -1;
+        }
+        else if (_EXCnt == 11)
+        {
+            _skillBtn_3.image.sprite = _chickenImage;
+            _skillBtn_2.image.sprite = _chickenImage;
+            _btnOrders[2] = -1;
+            _btnOrders[1] = -1;
+        }
+        else if (_EXCnt == 10)
+        {
+            _skillBtn_3.image.sprite = _chickenImage;
+            _btnOrders[2] = -1;
+        }
+
         _blockPanel.SetActive(false);
     }
 
     public void Btn_SelectSkill(int index)
     {
         int realIndex = _btnOrders[index];
-        if (realIndex < 6)
+        if (realIndex == -1)
+        {
+            PI._HP = Mathf.Clamp(PI._HP + 30, 0, PI._MaxHP);
+            PI.UpdateHP();
+        }
+        else if (realIndex < 6)
         {
             if (SM._skillAmounts[realIndex] == 0)
             {
@@ -305,13 +334,7 @@ public class GameManager : MonoBehaviour
                     SM._EXGarlic.SetActive(true);
                 }
 
-                _boxBtn.transform.parent.gameObject.SetActive(false);
-                _skillBtn_1.gameObject.SetActive(false);
-                _skillBtn_2.gameObject.SetActive(false);
-                _skillBtn_3.gameObject.SetActive(false);
-                _IsLevelUp = false;
-
-                Time.timeScale = 1f;
+                _EXCnt++;
             }
             else
             {
@@ -325,14 +348,6 @@ public class GameManager : MonoBehaviour
                 }
 
                 _skillTimes[realIndex] = 10;
-
-                _boxBtn.transform.parent.gameObject.SetActive(false);
-                _skillBtn_1.gameObject.SetActive(false);
-                _skillBtn_2.gameObject.SetActive(false);
-                _skillBtn_3.gameObject.SetActive(false);
-                _IsLevelUp = false;
-
-                Time.timeScale = 1f;
             }
         }
         else
@@ -356,23 +371,28 @@ public class GameManager : MonoBehaviour
 
             SM._accAmounts[realIndex]++;
 
-            if (SM._garlic.TryGetComponent(out Skill_Garlic garlic))
+            if (SM._accAmounts[realIndex] == 5)
             {
-                garlic.SetScale();
+                _EXCnt++;
             }
-
-            if (SM._EXGarlic.TryGetComponent(out Skill_EX_Garlic EXGarlic))
-            {
-                EXGarlic.SetScale();
-            }
-
-            _boxBtn.transform.parent.gameObject.SetActive(false);
-            _skillBtn_1.gameObject.SetActive(false);
-            _skillBtn_2.gameObject.SetActive(false);
-            _skillBtn_3.gameObject.SetActive(false);
-            _IsLevelUp = false;
-
-            Time.timeScale = 1f;
         }
+
+        if (SM._garlic.TryGetComponent(out Skill_Garlic garlic))
+        {
+            garlic.SetScale();
+        }
+
+        if (SM._EXGarlic.TryGetComponent(out Skill_EX_Garlic EXGarlic))
+        {
+            EXGarlic.SetScale();
+        }
+
+        _boxBtn.transform.parent.gameObject.SetActive(false);
+        _skillBtn_1.gameObject.SetActive(false);
+        _skillBtn_2.gameObject.SetActive(false);
+        _skillBtn_3.gameObject.SetActive(false);
+        _IsLevelUp = false;
+
+        Time.timeScale = 1f;
     }
 }
