@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Skill_EX_Garlic : MonoBehaviour
 {
+    SkillManager SM;
     PlayerInfo PI;
 
     Vector3 _originScale;
@@ -12,6 +13,7 @@ public class Skill_EX_Garlic : MonoBehaviour
 
     void Awake()
     {
+        SM = SkillManager.instance;
         PI = PlayerInfo.instance;
         _originScale = transform.localScale;
         _AttachedEnemies = new Dictionary<GameObject, float>();
@@ -20,9 +22,7 @@ public class Skill_EX_Garlic : MonoBehaviour
 
     public void SetScale()
     {
-        // 촛대 추가될때마다 or 스킬 고를때마다 호출
-        // 촛대 계수 추가
-        transform.localScale = _originScale * 1.35f;
+        transform.localScale = _originScale * 1.35f * (1 + SM._accAmounts[1] * 0.1f);
     }
 
     void OnTriggerEnter2D(Collider2D collision)
@@ -50,12 +50,12 @@ public class Skill_EX_Garlic : MonoBehaviour
 
                 if (_AttachedEnemies[collision.gameObject] >= 1)
                 {
-                    if (PI._HP + 0.5f <= PI._MaxHP)
+                    if (PI._HP + 0.1f <= PI._MaxHP)
                     {
-                        PI._HP += 0.5f;
+                        PI._HP += 0.1f;
                         PI.UpdateHP();
                     }
-                    float damage = PI._damage * _skillDamage * 1.7f;
+                    float damage = PI._damage * _skillDamage * 1.7f * (1 + SM._accAmounts[5] * 0.1f);
                     enemyMove._CurHP -= damage;
                     _AttachedEnemies[collision.gameObject] = 0;
                 }

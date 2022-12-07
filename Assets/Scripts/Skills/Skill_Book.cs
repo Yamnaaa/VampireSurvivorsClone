@@ -24,7 +24,7 @@ public class Skill_Book : MonoBehaviour
     {
         if (collision.CompareTag("Enemy"))
         {
-            float damage = PI._damage * _skillDamage * (0.9f + SM._skillAmounts[2] * 0.1f);
+            float damage = PI._damage * _skillDamage * (0.9f + SM._skillAmounts[2] * 0.1f) * (1 + SM._accAmounts[5] * 0.1f);
             if (collision.TryGetComponent(out EnemyMove enemyMove))
             {
                 enemyMove._CurHP -= damage;

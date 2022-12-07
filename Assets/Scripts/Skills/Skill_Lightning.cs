@@ -7,16 +7,20 @@ public class Skill_Lightning : MonoBehaviour
     SkillManager SM;
     PlayerInfo PI;
 
+    Vector3 _originScale;
     [SerializeField] float _skillDamage;
 
     void Awake()
     {
         SM = SkillManager.instance;
         PI = PlayerInfo.instance;
+
+        _originScale = transform.localScale;
     }
 
     void OnEnable()
     {
+        transform.localScale = _originScale * (1 + SM._accAmounts[1] * 0.1f);
         StartCoroutine(Delay_Deactivate());
     }
 
@@ -30,7 +34,7 @@ public class Skill_Lightning : MonoBehaviour
     {
         if (collision.CompareTag("Enemy"))
         {
-            float damage = PI._damage * _skillDamage * (0.9f + SM._skillAmounts[5] * 0.1f);
+            float damage = PI._damage * _skillDamage * (0.9f + SM._skillAmounts[5] * 0.1f) * (1 + SM._accAmounts[5] * 0.1f);
             if (collision.TryGetComponent(out EnemyMove enemyMove))
             {
                 enemyMove._CurHP -= damage;

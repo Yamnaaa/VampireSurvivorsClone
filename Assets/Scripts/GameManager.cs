@@ -163,7 +163,7 @@ public class GameManager : MonoBehaviour
         {
             if (i != 4)
             {
-                if (_skillTimes[i] >= _skillCools[i])
+                if (_skillTimes[i] >= _skillCools[i] * (1 - SM._accAmounts[3] * 0.08f))
                 {
                     if (i == 5 || SM._EXSkillAmounts[i] == 0)
                     {
@@ -385,6 +385,11 @@ public class GameManager : MonoBehaviour
         if (SM._EXGarlic.TryGetComponent(out Skill_EX_Garlic EXGarlic))
         {
             EXGarlic.SetScale();
+        }
+
+        if (SM._EXBook.TryGetComponent(out Skill_EX_Books EXBooks))
+        {
+            EXBooks.SetScale();
         }
 
         _boxBtn.transform.parent.gameObject.SetActive(false);

@@ -8,6 +8,7 @@ public class Skill_Books : MonoBehaviour
     PlayerInfo PI;
 
     List<Transform> _books;
+    Vector3 _originScale;
     int _skillAmount;
     float _speed = 120;
     float _skillTime = 3;
@@ -18,6 +19,8 @@ public class Skill_Books : MonoBehaviour
         _isFirst = true;
         SM = SkillManager.instance;
         PI = PlayerInfo.instance;
+
+        _originScale = transform.localScale;
     }
 
     void OnEnable()
@@ -27,6 +30,8 @@ public class Skill_Books : MonoBehaviour
             _isFirst = false;
             return;
         }
+
+        transform.localScale = _originScale * (1 + SM._accAmounts[1] * 0.1f);
 
         _books = new List<Transform>();
         GameObject pivot = transform.GetChild(0).gameObject;
@@ -46,7 +51,7 @@ public class Skill_Books : MonoBehaviour
     void Update()
     {
         transform.position = PI.transform.position;
-        transform.eulerAngles += Vector3.back * (Time.deltaTime * _speed);
+        transform.eulerAngles += Vector3.back * (Time.deltaTime * _speed * (1 + SM._accAmounts[0] * 0.1f));
         for (int i = 0; i < _books.Count; i++)
         {
             _books[i].eulerAngles = Vector3.zero;

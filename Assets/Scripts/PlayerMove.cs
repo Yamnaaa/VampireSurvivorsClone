@@ -6,6 +6,8 @@ public class PlayerMove : MonoBehaviour
 {
     public static PlayerMove instance;
 
+    SkillManager SM;
+
     [SerializeField] List<BoxCollider2D> _walls;
     [SerializeField] float _speed;
     float _inputX, _inputY;
@@ -27,6 +29,11 @@ public class PlayerMove : MonoBehaviour
         _inputY = 0;
 
         SetWall();
+    }
+
+    void Start()
+    {
+        SM = SkillManager.instance;
     }
 
     void Update()
@@ -72,7 +79,7 @@ public class PlayerMove : MonoBehaviour
             transform.rotation = Quaternion.Euler(Vector3.forward * angle);
         }
 
-        transform.position = new Vector2(transform.position.x + _inputX * _speed * Time.deltaTime, transform.position.y + _inputY * _speed * Time.deltaTime);
+        transform.position = new Vector2(transform.position.x + _inputX * _speed * (1 + SM._accAmounts[4] * 0.1f) * Time.deltaTime, transform.position.y + _inputY * _speed * Time.deltaTime);
 
         Camera.main.transform.position = transform.position - Vector3.forward * 10;
         _walls[0].transform.parent.position = transform.position;

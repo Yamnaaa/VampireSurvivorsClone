@@ -9,6 +9,7 @@ public class PlayerInfo : MonoBehaviour
 
     GameManager GM;
     EXPPoolManager EXPPM;
+    SkillManager SM;
 
     [HideInInspector] public Dictionary<GameObject, float> _AttachedEnemies;
     [SerializeField] Slider _HPBar;
@@ -43,6 +44,7 @@ public class PlayerInfo : MonoBehaviour
     void Start()
     {
         EXPPM = EXPPoolManager.instance;
+        SM = SkillManager.instance;
     }
 
     void Update()
@@ -90,12 +92,12 @@ public class PlayerInfo : MonoBehaviour
         {
             if (collision.TryGetComponent(out EXP exp) && !exp._isMoved) return;
 
-            _EXP += 10;
+            _EXP += 10 * (1 + SM._accAmounts[2] * 0.08f);
             collision.gameObject.SetActive(false);
 
             if (_EXP >= _MaxEXP)
             {
-                _EXP = 0;
+                _EXP -= _MaxEXP;
                 //_MaxEXP += 50;
                 LevelUp();
             }

@@ -22,9 +22,7 @@ public class Skill_Garlic : MonoBehaviour
 
     public void SetScale()
     {
-        // 촛대 추가될때마다 or 스킬 고를때마다 호출
-        // 촛대 계수 추가
-        transform.localScale = _originScale * (0.95f + SM._skillAmounts[4] * 0.05f);
+        transform.localScale = _originScale * (0.95f + SM._skillAmounts[4] * 0.05f) * (1 + SM._accAmounts[1] * 0.1f);
     }
 
     void OnTriggerEnter2D(Collider2D collision)
@@ -52,7 +50,7 @@ public class Skill_Garlic : MonoBehaviour
 
                 if (_AttachedEnemies[collision.gameObject] >= 1)
                 {
-                    float damage = PI._damage * _skillDamage * (0.9f + SM._skillAmounts[4] * 0.1f);
+                    float damage = PI._damage * _skillDamage * (0.9f + SM._skillAmounts[4] * 0.1f) * (1 + SM._accAmounts[5] * 0.1f);
                     enemyMove._CurHP -= damage;
                     _AttachedEnemies[collision.gameObject] = 0;
                 }

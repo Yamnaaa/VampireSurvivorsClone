@@ -4,17 +4,23 @@ using UnityEngine;
 
 public class Skill_EX_Lightning : MonoBehaviour
 {
+    SkillManager SM;
     PlayerInfo PI;
 
+    Vector3 _originScale;
     [SerializeField] float _skillDamage;
 
     void Awake()
     {
+        SM = SkillManager.instance;
         PI = PlayerInfo.instance;
+
+        _originScale = transform.localScale;
     }
 
     void OnEnable()
     {
+        transform.localScale = _originScale * (1 + SM._accAmounts[1] * 0.1f);
         StartCoroutine(Delay_Deactivate());
     }
 
@@ -29,7 +35,7 @@ public class Skill_EX_Lightning : MonoBehaviour
     {
         if (collision.CompareTag("Enemy"))
         {
-            float damage = PI._damage * _skillDamage * 1.7f;
+            float damage = PI._damage * _skillDamage * 1.7f * (1 + SM._accAmounts[5] * 0.1f);
             if (collision.TryGetComponent(out EnemyMove enemyMove))
             {
                 enemyMove._CurHP -= damage;

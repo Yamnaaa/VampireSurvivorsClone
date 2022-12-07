@@ -15,8 +15,8 @@ public class SkillManager : MonoBehaviour
     public GameObject _garlic;
     public GameObject _EXGarlic;
     public GameObject _EXBook;
-    public List<int> _skillAmounts;
-    [HideInInspector] public List<int> _accAmounts;
+    [HideInInspector] public List<int> _skillAmounts;
+    public List<int> _accAmounts;
     [HideInInspector] public List<int> _EXSkillAmounts;
 
     void Awake()
@@ -36,8 +36,12 @@ public class SkillManager : MonoBehaviour
 
         for (int i = 0; i < _skills.Count; i++)
         {
-            _skillAmounts.Add(0);
             _accAmounts.Add(0);
+        }
+
+        for (int i = 0; i < _skills.Count; i++)
+        {
+            _skillAmounts.Add(0);
             if (i != 4)
             {
                 SkillGenerate(i, 100);
