@@ -10,11 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 8250367409909591793}
   - component: {fileID: 8187710106145324514}
-  - component: {fileID: 3999248032366347444}
+  - component: {fileID: -374859158631921567}
   - component: {fileID: 2031139239771094957}
   - component: {fileID: 5549307265313966728}
   m_Layer: 0
-  m_Name: Enemy03
+  m_Name: Boss01
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 1513583380465876526}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -77,7 +77,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 0, b: 0.64581203, a: 1}
+  m_Color: {r: 0.5330782, g: 0, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -87,7 +87,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &3999248032366347444
+--- !u!114 &-374859158631921567
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -96,11 +96,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1513583380465876526}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 566313fb5953b88408a31fedaeadb4b6, type: 3}
+  m_Script: {fileID: 11500000, guid: fa9fe72d1407bb0459aa0ae61b658fef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 0.5
-  _MaxHP: 100
+  _bossBox: {fileID: 685776690358173757, guid: 1dcb291f32fa8a74dbe3d51f05570111, type: 3}
+  _speed: 0.8
+  _MaxHP: 500
   _CurHP: 0
   _damage: 0
 --- !u!58 &2031139239771094957

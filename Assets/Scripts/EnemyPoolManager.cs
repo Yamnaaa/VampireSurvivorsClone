@@ -9,6 +9,7 @@ public class EnemyPoolManager : MonoBehaviour
     GameManager GM;
 
     [SerializeField] List<GameObject> _enemies;
+    [SerializeField] GameObject _boss;
     [SerializeField] Transform _enemyParent;
     List<List<GameObject>> _enemyPools;
     int _resolutionX, _resolutionY, _offset;
@@ -95,5 +96,36 @@ public class EnemyPoolManager : MonoBehaviour
             }
             _enemyPools[enemy].Add(temp);
         }
+    }
+
+    public void BossActive()
+    {
+        int random = Random.Range(0, 4);
+        int randomX = 0;
+        int randomY = 0;
+
+        if (random == 0)
+        {
+            randomX = -_offset;
+            randomY = Random.Range(-_offset, _offset + _resolutionY);
+        }
+        else if (random == 1)
+        {
+            randomX = Random.Range(-_offset, _offset + _resolutionX);
+            randomY = _offset + _resolutionY;
+        }
+        else if (random == 2)
+        {
+            randomX = _offset + _resolutionX;
+            randomY = Random.Range(-_offset, _offset + _resolutionY);
+        }
+        else if (random == 3)
+        {
+            randomX = Random.Range(-_offset, _offset + _resolutionX);
+            randomY = -_offset;
+        }
+
+        GameObject boss = Instantiate(_boss, _enemyParent);
+        boss.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(randomX, randomY, 0));
     }
 }

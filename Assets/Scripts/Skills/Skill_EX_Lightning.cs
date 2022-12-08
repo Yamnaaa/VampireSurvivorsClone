@@ -26,7 +26,6 @@ public class Skill_EX_Lightning : MonoBehaviour
 
     IEnumerator Delay_Deactivate()
     {
-        print("actived");
         yield return new WaitForSeconds(0.2f);
         gameObject.SetActive(false);
     }
@@ -39,6 +38,18 @@ public class Skill_EX_Lightning : MonoBehaviour
             if (collision.TryGetComponent(out EnemyMove enemyMove))
             {
                 enemyMove._CurHP -= damage;
+            }
+            else if (collision.TryGetComponent(out BossMove bossMove))
+            {
+                bossMove._CurHP -= damage;
+            }
+            if (SM._EXSkillAmounts[5] == 0)
+            {
+                SM._damages[5] += damage;
+            }
+            else
+            {
+                SM._damages[11] += damage;
             }
         }
         else if (collision.CompareTag("Box"))

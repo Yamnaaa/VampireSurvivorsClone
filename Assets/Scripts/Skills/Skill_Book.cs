@@ -29,6 +29,18 @@ public class Skill_Book : MonoBehaviour
             {
                 enemyMove._CurHP -= damage;
             }
+            else if (collision.TryGetComponent(out BossMove bossMove))
+            {
+                bossMove._CurHP -= damage;
+            }
+            if (SM._EXSkillAmounts[2] == 0)
+            {
+                SM._damages[2] += damage;
+            }
+            else
+            {
+                SM._damages[8] += damage;
+            }
         }
         else if (collision.CompareTag("Box"))
         {

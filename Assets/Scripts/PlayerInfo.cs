@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerInfo : MonoBehaviour
@@ -18,9 +19,9 @@ public class PlayerInfo : MonoBehaviour
     [HideInInspector] public float _damage = 10;
     [HideInInspector] public float _MaxHP;
     [HideInInspector] public float _HP;
+    [HideInInspector] public int _level;
     float _MaxEXP;
     float _EXP;
-    float _level;
 
     void Awake()
     {
@@ -75,6 +76,23 @@ public class PlayerInfo : MonoBehaviour
                     _HPBar.value = _HP / _MaxHP;
                 }
             }
+            else if (collision.gameObject.TryGetComponent(out BossMove bossMove))
+            {
+                _AttachedEnemies[collision.gameObject] += Time.deltaTime;
+
+                if (_AttachedEnemies[collision.gameObject] >= 1)
+                {
+                    _HP -= bossMove._damage;
+                    _AttachedEnemies[collision.gameObject] = 0;
+                    _HPBar.value = _HP / _MaxHP;
+                }
+            }
+
+            if (_HP <= 0)
+            {
+                ResultValueManager.instance.GetResultValues();
+                SceneManager.LoadScene(2);
+            }
         }
     }
 
@@ -124,6 +142,12 @@ public class PlayerInfo : MonoBehaviour
             }
             Destroy(collision.gameObject);
         }
+        else if (collision.gameObject.CompareTag("BossBox"))
+        {
+            GM.LevelUp(true);
+
+            Destroy(collision.gameObject);
+        }
     }
 
     void LevelUp()
@@ -131,7 +155,7 @@ public class PlayerInfo : MonoBehaviour
         _level++;
         _LevelText.text = "·¹º§ " + _level;
 
-        GM.LevelUp();
+        GM.LevelUp(false);
     }
 
     public void UpdateHP()

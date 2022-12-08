@@ -11,6 +11,7 @@ TagManager:
   - Box
   - Chicken
   - Magnet
+  - BossBox
   layers:
   - Default
   - TransparentFX

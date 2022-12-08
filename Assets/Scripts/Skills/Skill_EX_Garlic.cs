@@ -44,6 +44,7 @@ public class Skill_EX_Garlic : MonoBehaviour
     {
         if (collision.CompareTag("Enemy"))
         {
+            float damage = PI._damage * _skillDamage * 1.7f * (1 + SM._accAmounts[5] * 0.1f);
             if (collision.TryGetComponent(out EnemyMove enemyMove))
             {
                 _AttachedEnemies[collision.gameObject] += Time.deltaTime;
@@ -55,9 +56,25 @@ public class Skill_EX_Garlic : MonoBehaviour
                         PI._HP += 0.1f;
                         PI.UpdateHP();
                     }
-                    float damage = PI._damage * _skillDamage * 1.7f * (1 + SM._accAmounts[5] * 0.1f);
                     enemyMove._CurHP -= damage;
                     _AttachedEnemies[collision.gameObject] = 0;
+                    SM._damages[10] += damage;
+                }
+            }
+            else if (collision.TryGetComponent(out BossMove bossMove))
+            {
+                _AttachedEnemies[collision.gameObject] += Time.deltaTime;
+
+                if (_AttachedEnemies[collision.gameObject] >= 1)
+                {
+                    if (PI._HP + 0.1f <= PI._MaxHP)
+                    {
+                        PI._HP += 0.1f;
+                        PI.UpdateHP();
+                    }
+                    bossMove._CurHP -= damage;
+                    _AttachedEnemies[collision.gameObject] = 0;
+                    SM._damages[10] += damage;
                 }
             }
         }

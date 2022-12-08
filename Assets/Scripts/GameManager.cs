@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -20,8 +21,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] Button _skillBtn_1;
     [SerializeField] Button _skillBtn_2;
     [SerializeField] Button _skillBtn_3;
-    [SerializeField] List<Image> _skillSlots;
-    [SerializeField] List<Image> _accSlots;
+    public List<Image> _skillSlots;
+    public List<Image> _accSlots;
     [SerializeField] GameObject _pause;
     [SerializeField] GameObject _blockPanel;
     [SerializeField] GameObject _randomBox;
@@ -32,19 +33,25 @@ public class GameManager : MonoBehaviour
     float _roundTime1;
     float _roundTime2;
     float _roundTime3;
+    float _bossTime;
     [SerializeField] List<float> _skillCools;
     [HideInInspector] public List<float> _skillTimes;
     [HideInInspector] public List<int> _enemySpawned;
+    [HideInInspector] public List<int> _skillOrdersResult;
+    [HideInInspector] public List<int> _accOrdersResult;
     List<int> _skillOrders;
     List<int> _accOrders;
     List<int> _btnOrders;
     [HideInInspector] public int _itemExist;
     int _itemCnt;
     int _EXCnt;
+    int _bossCnt;
 
     [HideInInspector] public bool _IsLevelUp;
     [HideInInspector] public bool _IsPause;
     bool _IsSkip;
+    bool _IsEX;
+    bool _IsBoss;
 
     void Awake()
     {
@@ -57,17 +64,23 @@ public class GameManager : MonoBehaviour
         _roundTime1 = 0;
         _roundTime2 = 600;
         _roundTime3 = 1200;
+        _bossTime = 180;
         _skillTimes = new List<float>();
+        _skillOrdersResult = new List<int>();
+        _accOrdersResult = new List<int>();
         _skillOrders = new List<int>();
         _accOrders = new List<int>();
         _btnOrders = new List<int>();
         _itemExist = 0;
         _itemCnt = 0;
         _EXCnt = 0;
+        _bossCnt = 0;
+
         for (int i = 0; i < 3; i++)
         {
             _btnOrders.Add(0);
         }
+        _skillOrdersResult.Add(0);
         for (int i = 0; i < _skillCools.Count; i++)
         {
             _skillTimes.Add(0);
@@ -92,6 +105,8 @@ public class GameManager : MonoBehaviour
         _IsLevelUp = false;
         _IsSkip = false;
         _IsPause = false;
+        _IsEX = false;
+        _IsBoss = false;
     }
 
     void Start()
@@ -100,6 +115,11 @@ public class GameManager : MonoBehaviour
         SM = SkillManager.instance;
         PM = PlayerMove.instance;
         PI = PlayerInfo.instance;
+
+        for (int i = 0; i < ResultValueManager.instance._skillTimes.Count; i++)
+        {
+            ResultValueManager.instance._skillTimes[i] = 0;
+        }
     }
 
     void Update()
@@ -142,7 +162,7 @@ public class GameManager : MonoBehaviour
                 EPM.EnemyActive(0, 1);
             }
         }
-        
+
         if (_curTime > _roundTime2)
         {
             while (_enemySpawned[1] * (0.4f + 1.6f * _roundTime3 / (_roundTime3 + (_curTime - _roundTime2) * 3)) < _curTime - _roundTime2)
@@ -150,7 +170,7 @@ public class GameManager : MonoBehaviour
                 EPM.EnemyActive(1, 1);
             }
         }
-        
+
         if (_curTime > _roundTime3)
         {
             while (_enemySpawned[2] * (0.8f + 3.2f * 1800 / (1800 + (_curTime - _roundTime3) * 3)) < _curTime - _roundTime3)
@@ -158,7 +178,13 @@ public class GameManager : MonoBehaviour
                 EPM.EnemyActive(2, 1);
             }
         }
-        
+
+        if (_curTime > _bossTime * (_bossCnt + 1))
+        {
+            EPM.BossActive();
+            _bossCnt++;
+        }
+
         for (int i = 0; i < _skillCools.Count; i++)
         {
             if (i != 4)
@@ -192,11 +218,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void LevelUp()
+    public void LevelUp(bool IsBoss)
     {
         Time.timeScale = 0f;
 
         _IsLevelUp = true;
+        _IsBoss = IsBoss;
 
         _boxBtn.transform.parent.gameObject.SetActive(true);
         _boxBtn.SetActive(true);
@@ -246,17 +273,6 @@ public class GameManager : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
 
-        bool IsEX = false;
-        for (int i = 0; i < SM._skillAmounts.Count; i++)
-        {
-            if (SM._skillAmounts[i] == 8 && SM._accAmounts[i] > 0 && SM._EXSkillAmounts[i] < 1 && !IsEX)
-            {
-                random1 = i;
-                _skillBtn_1.image.sprite = _EXSkillImages[i];
-                IsEX = true;
-            }
-        }
-
         _btnOrders[0] = random1;
         _btnOrders[1] = random2;
         _btnOrders[2] = random3;
@@ -283,6 +299,20 @@ public class GameManager : MonoBehaviour
             _btnOrders[2] = -1;
         }
 
+        _IsEX = false;
+        if (_IsBoss)
+        {
+            for (int i = 0; i < SM._skillAmounts.Count; i++)
+            {
+                if (SM._skillAmounts[i] == 8 && SM._accAmounts[i] > 0 && SM._EXSkillAmounts[i] < 1 && !_IsEX)
+                {
+                    _btnOrders[0] = i;
+                    _skillBtn_1.image.sprite = _EXSkillImages[i];
+                    _IsEX = true;
+                }
+            }
+        }
+
         _blockPanel.SetActive(false);
     }
 
@@ -305,12 +335,14 @@ public class GameManager : MonoBehaviour
                     {
                         _skillSlots[i].sprite = _skillImages[realIndex];
                         _skillOrders[realIndex] = i;
+                        _skillOrdersResult.Add(realIndex);
+                        ResultValueManager.instance._skillTimes[realIndex] = _curTime;
                         IsDone = true;
                     }
                 }
             }
 
-            if (SM._skillAmounts[realIndex] == 8 && SM._accAmounts[realIndex] > 0 && SM._EXSkillAmounts[realIndex] < 1)
+            if (_IsEX)
             {
                 for (int i = 0; i < _skillSlots[_skillOrders[realIndex]].transform.childCount; i++)
                 {
@@ -334,7 +366,8 @@ public class GameManager : MonoBehaviour
                     SM._EXGarlic.SetActive(true);
                 }
 
-                _EXCnt++;
+                _skillOrdersResult.Add(realIndex + 6);
+                ResultValueManager.instance._skillTimes[realIndex + 6] = _curTime;
             }
             else
             {
@@ -348,6 +381,11 @@ public class GameManager : MonoBehaviour
                 }
 
                 _skillTimes[realIndex] = 10;
+
+                if (SM._skillAmounts[realIndex] == 8)
+                {
+                    _EXCnt++;
+                }
             }
         }
         else
@@ -362,6 +400,7 @@ public class GameManager : MonoBehaviour
                     {
                         _accSlots[i].sprite = _accImages[realIndex];
                         _accOrders[realIndex] = i;
+                        _accOrdersResult.Add(realIndex);
                         IsDone = true;
                     }
                 }
@@ -399,5 +438,18 @@ public class GameManager : MonoBehaviour
         _IsLevelUp = false;
 
         Time.timeScale = 1f;
+    }
+
+    public void Btn_Quit()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(0);
+    }
+
+    public void Btn_Resume()
+    {
+        _pause.SetActive(false);
+        Time.timeScale = 1f;
+        _IsPause = false;
     }
 }

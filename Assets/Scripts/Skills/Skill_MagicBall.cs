@@ -52,6 +52,16 @@ public class Skill_MagicBall : MonoBehaviour
                     gameObject.SetActive(false);
                 }
             }
+            else if (collision.TryGetComponent(out BossMove bossMove))
+            {
+                bossMove._CurHP -= damage;
+                _through--;
+                if (_through <= 0)
+                {
+                    gameObject.SetActive(false);
+                }
+            }
+            SM._damages[3] += damage;
         }
         else if (collision.CompareTag("Box"))
         {

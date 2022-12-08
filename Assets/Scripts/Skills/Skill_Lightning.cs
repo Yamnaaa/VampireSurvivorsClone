@@ -39,6 +39,18 @@ public class Skill_Lightning : MonoBehaviour
             {
                 enemyMove._CurHP -= damage;
             }
+            else if (collision.TryGetComponent(out BossMove bossMove))
+            {
+                bossMove._CurHP -= damage;
+            }
+            if (SM._EXSkillAmounts[5] == 0)
+            {
+                SM._damages[5] += damage;
+            }
+            else
+            {
+                SM._damages[11] += damage;
+            }
         }
         else if (collision.CompareTag("Box"))
         {
