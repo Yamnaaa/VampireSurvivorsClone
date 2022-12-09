@@ -61,6 +61,7 @@ public class GameManager : MonoBehaviour
         }
 
         _killText.text = "0";
+        _curTime = 0;
         _roundTime1 = 0;
         _roundTime2 = 600;
         _roundTime3 = 1200;
@@ -115,11 +116,6 @@ public class GameManager : MonoBehaviour
         SM = SkillManager.instance;
         PM = PlayerMove.instance;
         PI = PlayerInfo.instance;
-
-        for (int i = 0; i < ResultValueManager.instance._skillTimes.Count; i++)
-        {
-            ResultValueManager.instance._skillTimes[i] = 0;
-        }
     }
 
     void Update()
@@ -129,6 +125,11 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) || (Input.GetKeyDown(KeyCode.Escape) && _IsLevelUp))
         {
             _IsSkip = true;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space) && _IsLevelUp && _boxBtn.activeSelf)
+        {
+            Btn_Box();
         }
 
         if (Input.GetKeyDown(KeyCode.Escape) && !_IsLevelUp)
@@ -336,7 +337,7 @@ public class GameManager : MonoBehaviour
                         _skillSlots[i].sprite = _skillImages[realIndex];
                         _skillOrders[realIndex] = i;
                         _skillOrdersResult.Add(realIndex);
-                        ResultValueManager.instance._skillTimes[realIndex] = _curTime;
+                        SM._skillTimes[realIndex] = _curTime;
                         IsDone = true;
                     }
                 }
@@ -367,7 +368,7 @@ public class GameManager : MonoBehaviour
                 }
 
                 _skillOrdersResult.Add(realIndex + 6);
-                ResultValueManager.instance._skillTimes[realIndex + 6] = _curTime;
+                SM._skillTimes[realIndex + 6] = _curTime;
             }
             else
             {

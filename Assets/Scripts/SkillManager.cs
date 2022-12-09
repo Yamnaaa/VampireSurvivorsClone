@@ -16,6 +16,7 @@ public class SkillManager : MonoBehaviour
     public GameObject _EXGarlic;
     public GameObject _EXBook;
     [HideInInspector] public List<float> _damages;
+    [HideInInspector] public List<float> _skillTimes;
     [HideInInspector] public List<int> _skillAmounts;
     public List<int> _accAmounts;
     [HideInInspector] public List<int> _EXSkillAmounts;
@@ -32,6 +33,7 @@ public class SkillManager : MonoBehaviour
         _skillPool = new List<List<GameObject>>();
 
         _damages = new List<float>();
+        _skillTimes = new List<float>();
         _skillAmounts = new List<int>();
         _accAmounts = new List<int>();
         _EXSkillAmounts = new List<int>();
@@ -39,6 +41,7 @@ public class SkillManager : MonoBehaviour
         for (int i = 0; i < _skills.Count + _EXSkills.Count; i++)
         {
             _damages.Add(0);
+            _skillTimes.Add(0);
         }
 
         for (int i = 0; i < _skills.Count; i++)

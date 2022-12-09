@@ -28,26 +28,23 @@ public class ResultValueManager : MonoBehaviour
             instance = this;
             DontDestroyOnLoad(gameObject);
         }
+    }
 
+    public void GetResultValues()
+    {
         GM = GameManager.instance;
         SM = SkillManager.instance;
         PI = PlayerInfo.instance;
 
         _damages = new List<float>();
         _skillTimes = new List<float>();
-        for (int i = 0; i < SM._skills.Count + SM._EXSkills.Count; i++)
-        {
-            _skillTimes.Add(0);
-        }
         _skillOrders = new List<int>();
         _accOrders = new List<int>();
         _skillAmounts = new List<int>();
         _EXSkillAmounts = new List<int>();
-    }
 
-    public void GetResultValues()
-    {
         _damages = SM._damages;
+        _skillTimes = SM._skillTimes;
         _time = GM._curTime;
         _skillOrders = GM._skillOrdersResult;
         _accOrders = GM._accOrdersResult;

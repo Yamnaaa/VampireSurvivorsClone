@@ -31,7 +31,14 @@ public class ResultManager : MonoBehaviour
         {
             _images[i].sprite = _skillImages[RVM._skillOrders[i]];
             _skillNames[i].text = _skillImages[RVM._skillOrders[i]].name;
-            _skillLevels[i].text = RVM._skillAmounts[RVM._skillOrders[i]].ToString();
+            if (RVM._skillOrders[i] < 6)
+            {
+                _skillLevels[i].text = RVM._skillAmounts[RVM._skillOrders[i]].ToString();
+            }
+            else
+            {
+                _skillLevels[i].text = RVM._EXSkillAmounts[RVM._skillOrders[i] - 6].ToString();
+            }
             if (RVM._damages[RVM._skillOrders[i]] < 1000)
             {
                 _skillDamages[i].text = string.Format("{0:0.#}", RVM._damages[RVM._skillOrders[i]]);
