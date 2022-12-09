@@ -116,7 +116,7 @@ public class PlayerInfo : MonoBehaviour
             if (_EXP >= _MaxEXP)
             {
                 _EXP -= _MaxEXP;
-                //_MaxEXP += 50;
+                _MaxEXP += 50;
                 LevelUp();
             }
         }

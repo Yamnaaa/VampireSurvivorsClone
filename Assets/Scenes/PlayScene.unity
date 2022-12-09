@@ -1346,9 +1346,9 @@ MonoBehaviour:
   _curTime: 0
   _skillCools:
   - 1
-  - 2
-  - 5
   - 3
+  - 5
+  - 1
   - 0
   - 5
   _skillTimes: []
@@ -2228,7 +2228,7 @@ MonoBehaviour:
   - {fileID: 1093168424}
   - {fileID: 1402064689}
   - {fileID: 219602318}
-  _speed: 2
+  _speed: 1.5
   _resolutionX: 0
   _resolutionY: 0
   _offset: 0
@@ -3739,6 +3739,8 @@ MonoBehaviour:
   _time: 0
   _skillOrders: 
   _accOrders: 
+  _skillAmounts: 
+  _EXSkillAmounts: 
   _level: 0
   _enemies: 0
 --- !u!4 &593017379
